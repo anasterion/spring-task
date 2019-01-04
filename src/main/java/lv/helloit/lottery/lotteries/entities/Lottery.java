@@ -1,22 +1,29 @@
 package lv.helloit.lottery.lotteries.entities;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Objects;
 
 public class Lottery {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "title")
     private String title;
+
+    @Column(name = "limit")
     private Long limit;
-    private String status;
-    private String reason;
 
     public Lottery() {
     }
 
-    public Lottery(String title, Long limit, String status, String reason) {
+    public Lottery(String title, Long limit) {
         this.title = title;
         this.limit = limit;
-        this.status = status;
-        this.reason = reason;
     }
 
     public Long getId() {
@@ -43,22 +50,6 @@ public class Lottery {
         this.limit = limit;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getReason() {
-        return reason;
-    }
-
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -66,14 +57,12 @@ public class Lottery {
         Lottery lottery = (Lottery) o;
         return Objects.equals(id, lottery.id) &&
                 Objects.equals(title, lottery.title) &&
-                Objects.equals(limit, lottery.limit) &&
-                Objects.equals(status, lottery.status) &&
-                Objects.equals(reason, lottery.reason);
+                Objects.equals(limit, lottery.limit);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, limit, status, reason);
+        return Objects.hash(id, title, limit);
     }
 
     @Override
@@ -82,8 +71,6 @@ public class Lottery {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", limit=" + limit +
-                ", status='" + status + '\'' +
-                ", reason='" + reason + '\'' +
                 '}';
     }
 }
