@@ -16,7 +16,7 @@ public class Lottery {
     private String title;
 
     @Column(name = "user_limit")
-    private Long limit;
+    private String limit;
 
     @Column(name = "start_date")
     private Date startDate;
@@ -24,12 +24,10 @@ public class Lottery {
     @Column(name = "end_date")
     private Date endDate;
 
-    public Lottery() {
-    }
+    @Column(name = "lottery_status")
+    private String lotteryStatus;
 
-    public Lottery(String title, Long limit) {
-        this.title = title;
-        this.limit = limit;
+    public Lottery() {
     }
 
     public Long getId() {
@@ -48,11 +46,11 @@ public class Lottery {
         this.title = title;
     }
 
-    public Long getLimit() {
+    public String getLimit() {
         return limit;
     }
 
-    public void setLimit(Long limit) {
+    public void setLimit(String limit) {
         this.limit = limit;
     }
 
@@ -72,6 +70,14 @@ public class Lottery {
         this.endDate = endDate;
     }
 
+    public String getLotteryStatus() {
+        return lotteryStatus;
+    }
+
+    public void setLotteryStatus(String lotteryStatus) {
+        this.lotteryStatus = lotteryStatus;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -81,12 +87,13 @@ public class Lottery {
                 Objects.equals(title, lottery.title) &&
                 Objects.equals(limit, lottery.limit) &&
                 Objects.equals(startDate, lottery.startDate) &&
-                Objects.equals(endDate, lottery.endDate);
+                Objects.equals(endDate, lottery.endDate) &&
+                Objects.equals(lotteryStatus, lottery.lotteryStatus);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, limit, startDate, endDate);
+        return Objects.hash(id, title, limit, startDate, endDate, lotteryStatus);
     }
 
     @Override
@@ -94,9 +101,10 @@ public class Lottery {
         return "Lottery{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", limit=" + limit +
+                ", limit='" + limit + '\'' +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
+                ", lotteryStatus='" + lotteryStatus + '\'' +
                 '}';
     }
 }

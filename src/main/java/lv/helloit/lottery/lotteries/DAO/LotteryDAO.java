@@ -8,5 +8,7 @@ import java.util.Collection;
 public interface LotteryDAO {
     LotteryResponse startRegistration(Lottery lottery);
 
-    Collection checkIfDuplicate(String title);
+    boolean checkIfDuplicate(String title);
+
+    Collection<Lottery> getAll();
 }

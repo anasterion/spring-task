@@ -10,6 +10,8 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import java.util.Collection;
 import java.util.List;
 
@@ -36,13 +38,31 @@ public class LotteryDAOImplementation implements LotteryDAO {
     }
 
     @Override
-    public Collection<Lottery> checkIfDuplicate(String title) {
+    public boolean checkIfDuplicate(String title) {
         Session session = sessionFactory.openSession();
 
         Query<Lottery> query = session.createQuery("from Lottery l where l.title like '" + title + "'", Lottery.class);
         List<Lottery> employees = query.getResultList();
 
+        if (employees.size() == 0) {
+            session.close();
+            return true;
+        }
+
         session.close();
-        return employees;
+        return false;
+    }
+
+    @Override
+    public List<Lottery> getAll() {
+        Session session = sessionFactory.openSession();
+
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Lottery> query = builder.createQuery(Lottery.class);
+        query.select(query.from(Lottery.class));
+        List<Lottery> lotteryList = session.createQuery(query).getResultList();
+
+        session.close();
+        return lotteryList;
     }
 }
