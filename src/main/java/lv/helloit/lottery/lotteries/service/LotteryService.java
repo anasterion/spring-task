@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 public class LotteryService {
     private final static Logger LOGGER = LoggerFactory.getLogger(LotteryController.class);
@@ -22,6 +24,7 @@ public class LotteryService {
     public LotteryResponse startRegistration(Lottery lottery) {
         LOGGER.info("Starting to create new lottery -> " + lottery);
 
+        lottery.setStartDate(new Date());
         return lotteryDAO.startRegistration(lottery);
     }
 }

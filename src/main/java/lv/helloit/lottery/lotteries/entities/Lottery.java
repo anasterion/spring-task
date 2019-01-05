@@ -1,11 +1,11 @@
 package lv.helloit.lottery.lotteries.entities;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Date;
 import java.util.Objects;
 
+@Entity
+@Table(name = "lottery")
 public class Lottery {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,8 +15,14 @@ public class Lottery {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "limit")
+    @Column(name = "user_limit")
     private Long limit;
+
+    @Column(name = "start_date")
+    private Date startDate;
+
+    @Column(name = "end_date")
+    private Date endDate;
 
     public Lottery() {
     }
@@ -50,6 +56,22 @@ public class Lottery {
         this.limit = limit;
     }
 
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -57,12 +79,14 @@ public class Lottery {
         Lottery lottery = (Lottery) o;
         return Objects.equals(id, lottery.id) &&
                 Objects.equals(title, lottery.title) &&
-                Objects.equals(limit, lottery.limit);
+                Objects.equals(limit, lottery.limit) &&
+                Objects.equals(startDate, lottery.startDate) &&
+                Objects.equals(endDate, lottery.endDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, limit);
+        return Objects.hash(id, title, limit, startDate, endDate);
     }
 
     @Override
@@ -71,6 +95,8 @@ public class Lottery {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", limit=" + limit +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
                 '}';
     }
 }
