@@ -1,6 +1,10 @@
 package lv.helloit.lottery.lotteries.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.util.Date;
 import java.util.Objects;
 
@@ -12,9 +16,11 @@ public class Lottery {
     @Column(name = "id")
     private Long id;
 
+    @NotBlank(message = "Value can't be empty")
     @Column(name = "title")
     private String title;
 
+    @NotBlank(message = "Value can't be empty")
     @Column(name = "user_limit")
     private String limit;
 
