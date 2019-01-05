@@ -1,7 +1,6 @@
 package lv.helloit.lottery.lotteries.service;
 
 import lv.helloit.lottery.lotteries.DAO.LotteryDAO;
-import lv.helloit.lottery.lotteries.controller.LotteryController;
 import lv.helloit.lottery.lotteries.entities.Lottery;
 import lv.helloit.lottery.lotteries.entities.LotteryFailResponse;
 import lv.helloit.lottery.lotteries.entities.LotteryResponse;
@@ -15,7 +14,7 @@ import java.util.Date;
 
 @Service
 public class LotteryService {
-    private final static Logger LOGGER = LoggerFactory.getLogger(LotteryController.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(LotteryService.class);
     private final LotteryDAO lotteryDAO;
 
     @Autowired
@@ -24,7 +23,7 @@ public class LotteryService {
     }
 
     public LotteryResponse startRegistration(Lottery lottery) {
-        LOGGER.info("Starting to create new lottery -> " + lottery);
+        LOGGER.info("Starting to create new lottery");
         String reason = validateLotteryRegistration(lottery);
 
         if (!reason.equals("")) {
@@ -34,10 +33,6 @@ public class LotteryService {
         lottery.setStartDate(new Date());
         lottery.setLotteryStatus("IN PROGRESS");
         return lotteryDAO.startRegistration(lottery);
-    }
-
-    public Collection<Lottery> getAll() {
-        return lotteryDAO.getAll();
     }
 
     private String validateLotteryRegistration(Lottery lottery) {
@@ -72,5 +67,9 @@ public class LotteryService {
         }
 
         return reason;
+    }
+
+    public Collection<Lottery> getAll() {
+        return lotteryDAO.getAll();
     }
 }
