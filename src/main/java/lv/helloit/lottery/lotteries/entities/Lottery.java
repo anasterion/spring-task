@@ -1,10 +1,11 @@
 package lv.helloit.lottery.lotteries.entities;
 
 import lv.helloit.lottery.lotteries.constraints.IsGreaterThanZero;
+import lv.helloit.lottery.participants.entities.Participant;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -25,13 +26,16 @@ public class Lottery {
     private String limit;
 
     @Column(name = "start_date")
-    private Date startDate;
+    private String startDate;
 
     @Column(name = "end_date")
-    private Date endDate;
+    private String endDate;
 
     @Column(name = "lottery_status")
     private String lotteryStatus;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "lottery")
+    private List<Participant> participants;
 
     public Lottery() {
     }
@@ -60,19 +64,19 @@ public class Lottery {
         this.limit = limit.trim();
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 

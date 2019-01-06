@@ -1,8 +1,7 @@
 package lv.helloit.lottery;
 
-import lv.helloit.lottery.lotteries.DAO.LotteryDAO;
 import lv.helloit.lottery.lotteries.entities.Lottery;
-import lv.helloit.lottery.participants.Participant;
+import lv.helloit.lottery.participants.entities.Participant;
 import org.hibernate.SessionFactory;
 import org.hibernate.validator.HibernateValidator;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;

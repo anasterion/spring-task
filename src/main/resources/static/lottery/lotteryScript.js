@@ -41,6 +41,7 @@ function addLottery(lottery) {
         <td>${lottery.title}</td>
         <td>${lottery.limit}</td>
         <td>${lottery.lotteryStatus}</td>
+        <td>${lottery.startDate}</td>
 `;
 
     document.getElementById('table-body').appendChild(tr);

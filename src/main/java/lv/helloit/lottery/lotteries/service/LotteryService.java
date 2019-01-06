@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 
@@ -24,12 +25,21 @@ public class LotteryService {
     public LotteryResponse startRegistration(Lottery lottery) {
         LOGGER.info("Starting to create new lottery");
 
-        lottery.setStartDate(new Date());
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("DD.MM.YY HH:mm");
+        String strDate = simpleDateFormat.format(date);
+
+        lottery.setStartDate(strDate);
         lottery.setLotteryStatus("IN PROGRESS");
-        return lotteryDAO.startRegistration(lottery);
+
+        LotteryResponse response = lotteryDAO.startRegistration(lottery);
+        LOGGER.info("Created lottery -> " + lottery);
+
+        return response;
     }
 
     public Collection<Lottery> getAll() {
+        LOGGER.info("Printing lottery list");
         return lotteryDAO.getAll();
     }
 
