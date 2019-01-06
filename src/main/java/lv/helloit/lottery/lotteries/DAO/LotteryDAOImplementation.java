@@ -1,21 +1,19 @@
 package lv.helloit.lottery.lotteries.DAO;
 
 import lv.helloit.lottery.lotteries.entities.Lottery;
-import lv.helloit.lottery.lotteries.entities.LotteryFailResponse;
 import lv.helloit.lottery.lotteries.entities.LotteryResponse;
 import lv.helloit.lottery.lotteries.entities.LotterySuccessResponse;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class LotteryDAOImplementation implements LotteryDAO {
@@ -62,5 +60,14 @@ public class LotteryDAOImplementation implements LotteryDAO {
 
         session.close();
         return false;
+    }
+
+    @Override
+    public Optional<Lottery> getById(Long id) {
+        Session session = sessionFactory.openSession();
+        Lottery lottery = session.get(Lottery.class, id);
+
+        session.close();
+        return Optional.ofNullable(lottery);
     }
 }

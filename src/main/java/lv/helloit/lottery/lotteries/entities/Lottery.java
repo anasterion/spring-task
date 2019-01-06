@@ -1,5 +1,7 @@
 package lv.helloit.lottery.lotteries.entities;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lv.helloit.lottery.lotteries.constraints.IsGreaterThanZero;
 import lv.helloit.lottery.participants.entities.Participant;
 
@@ -35,10 +37,8 @@ public class Lottery {
     private String lotteryStatus;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "lottery")
+    @JsonIgnore // had issue with infinite jackson loop in logs, fixed by adding json ignore annotation here
     private List<Participant> participants;
-
-    public Lottery() {
-    }
 
     public Long getId() {
         return id;
@@ -86,6 +86,14 @@ public class Lottery {
 
     public void setLotteryStatus(String lotteryStatus) {
         this.lotteryStatus = lotteryStatus;
+    }
+
+    public List<Participant> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(List<Participant> participants) {
+        this.participants = participants;
     }
 
     @Override

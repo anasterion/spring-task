@@ -1,7 +1,5 @@
 package lv.helloit.lottery.participants.constraints;
 
-import lv.helloit.lottery.lotteries.constraints.IsGreaterThanZeroConstraintValidator;
-
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.ElementType;
@@ -14,7 +12,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AgeReq {
 
-    String message() default "value should be number greater than 21";
+    String message() default "value can't be empty and should be a number greater than or equal to 21";
 
     Class<?>[] groups() default { };
 

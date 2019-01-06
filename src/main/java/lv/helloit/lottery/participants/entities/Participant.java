@@ -1,10 +1,14 @@
 package lv.helloit.lottery.participants.entities;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lv.helloit.lottery.lotteries.constraints.IsGreaterThanZero;
 import lv.helloit.lottery.lotteries.entities.Lottery;
 import lv.helloit.lottery.participants.constraints.AgeReq;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 @Entity
@@ -15,7 +19,11 @@ public class Participant {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "lottery_id")
+    private Long lotteryId;
+
     @Email(message = "should be valid email")
+    @NotBlank(message = "can't be empty")
     @Column(name = "email")
     private String email;
 
@@ -24,7 +32,7 @@ public class Participant {
     private String age;
 
     @Column(name = "code")
-    private Integer code;
+    private String code;
 
     @ManyToOne
     @JoinColumn(name = "participant_lottery_id")
@@ -57,11 +65,11 @@ public class Participant {
         this.age = age.trim();
     }
 
-    public Integer getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(Integer code) {
+    public void setCode(String code) {
         this.code = code;
     }
 
@@ -73,12 +81,21 @@ public class Participant {
         this.lottery = lottery;
     }
 
+    public Long getLotteryId() {
+        return lotteryId;
+    }
+
+    public void setLotteryId(Long lotteryId) {
+        this.lotteryId = lotteryId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Participant that = (Participant) o;
         return Objects.equals(id, that.id) &&
+                Objects.equals(lotteryId, that.lotteryId) &&
                 Objects.equals(email, that.email) &&
                 Objects.equals(age, that.age) &&
                 Objects.equals(code, that.code) &&
@@ -87,13 +104,14 @@ public class Participant {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, age, code, lottery);
+        return Objects.hash(id, lotteryId, email, age, code, lottery);
     }
 
     @Override
     public String toString() {
         return "Participant{" +
                 "id=" + id +
+                ", lotteryId='" + lotteryId + '\'' +
                 ", email='" + email + '\'' +
                 ", age='" + age + '\'' +
                 ", code=" + code +

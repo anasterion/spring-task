@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface IsGreaterThanZero {
 
-    String message() default "value should be number greater than zero";
+    String message() default "value can't be empty and should be a number greater than zero";
 
     Class<?>[] groups() default { };
 
