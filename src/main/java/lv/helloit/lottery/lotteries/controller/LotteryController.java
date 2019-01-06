@@ -7,7 +7,10 @@ import lv.helloit.lottery.lotteries.service.LotteryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.Collection;
@@ -26,6 +29,7 @@ public class LotteryController {
         String titleErrorMessage = "";
         String limitErrorMessage = "";
 
+
         if (bindingResult.hasErrors()) {
             int titleErrorCount = bindingResult.getFieldErrorCount("title");
             int limitErrorCount = bindingResult.getFieldErrorCount("limit");
@@ -39,22 +43,17 @@ public class LotteryController {
                 limitErrorMessage = bindingResult.getFieldError("limit").getField() + " : " +
                         bindingResult.getFieldError("limit").getDefaultMessage() + "\n";
 
-                String errorMessage = titleErrorMessage + limitErrorMessage;
-                return new LotteryFailResponse("Fail", errorMessage);
+                if (!lotteryService.checkIfDuplicate(lottery.getTitle())) {
+                    titleErrorMessage = "title : value should be unique\n";
+                }
             }
+
+            String errorMessage = titleErrorMessage + limitErrorMessage;
+            return new LotteryFailResponse("Fail", errorMessage);
         }
 
-        try {
-            int tmpNum = Integer.parseInt(lottery.getLimit());
-
-            if (tmpNum <= 0) {
-                limitErrorMessage = "limit : Value should be greater than 0";
-                String errorMessage = titleErrorMessage + limitErrorMessage;
-                return new LotteryFailResponse("Fail", errorMessage);
-            }
-        } catch (NumberFormatException e) {
-            limitErrorMessage = "limit : Value should be a number";
-            String errorMessage = titleErrorMessage + limitErrorMessage;
+        if (!lotteryService.checkIfDuplicate(lottery.getTitle())) {
+            String errorMessage = "title : value should be unique\n" + limitErrorMessage;
             return new LotteryFailResponse("Fail", errorMessage);
         }
 

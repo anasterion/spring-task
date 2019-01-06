@@ -32,4 +32,8 @@ public class LotteryService {
     public Collection<Lottery> getAll() {
         return lotteryDAO.getAll();
     }
+
+    public boolean checkIfDuplicate(String value) {
+        return lotteryDAO.checkIfDuplicate(value);
+    }
 }
