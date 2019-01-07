@@ -50,8 +50,14 @@ function addLottery(lottery) {
 function stopLottery() {
     const id = document.getElementById('id').value;
 
-    fetch('/stop-registration/' + id, {
-        method: 'POST'
+    fetch('/stop-registration', {
+        method: 'POST',
+        body: JSON.stringify({
+            id: id,
+        }),
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8'
+        }
     }).then((resp) => resp.json()
     ).then(response => {
         if (response.status === 'OK') {

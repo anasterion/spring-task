@@ -1,5 +1,6 @@
 package lv.helloit.lottery.lotteries.controller;
 
+import lv.helloit.lottery.lotteries.entities.IdValidationWrapper;
 import lv.helloit.lottery.lotteries.entities.Lottery;
 import lv.helloit.lottery.lotteries.entities.LotteryFailResponse;
 import lv.helloit.lottery.lotteries.entities.LotteryResponse;
@@ -62,21 +63,22 @@ public class LotteryController {
         return lotteryService.getAll();
     }
 
-    @PostMapping(value = "/stop-registration/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public LotteryResponse stopRegistration(@PathVariable String id) {
-        Long lotteryId;
+    @PostMapping(value = "/stop-registration", produces = MediaType.APPLICATION_JSON_VALUE)
+    public LotteryResponse stopRegistration(@Valid @RequestBody IdValidationWrapper id, BindingResult bindingResult) {
+        String idErrorMessage = "";
 
-        try {
-            lotteryId = Long.valueOf(id);
+        if (bindingResult.hasErrors()) {
+            int idErrorCount = bindingResult.getFieldErrorCount("id");
 
-            if (lotteryId <= 0) {
-                return new LotteryFailResponse("Fail", "id: value can't be empty and should be a number greater than zero");
+            if (idErrorCount > 0) {
+                idErrorMessage = bindingResult.getFieldError("id").getField() + " : " +
+                        bindingResult.getFieldError("id").getDefaultMessage() + "\n";
             }
-        } catch (NumberFormatException e) {
-            return new LotteryFailResponse("Fail", "id: value can't be empty and should be a number greater than zero");
+
+            return new LotteryFailResponse("Fail", idErrorMessage);
         }
 
-        LotteryResponse response = lotteryService.stopRegistration(lotteryId);
+        LotteryResponse response = lotteryService.stopRegistration(Long.valueOf(id.getId()));
 
         return response;
     }

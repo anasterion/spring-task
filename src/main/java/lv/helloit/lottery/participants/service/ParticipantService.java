@@ -2,7 +2,6 @@ package lv.helloit.lottery.participants.service;
 
 import lv.helloit.lottery.lotteries.DAO.LotteryDAO;
 import lv.helloit.lottery.lotteries.entities.Lottery;
-import lv.helloit.lottery.lotteries.service.LotteryService;
 import lv.helloit.lottery.participants.DAO.ParticipantDAO;
 import lv.helloit.lottery.participants.entities.Participant;
 import lv.helloit.lottery.participants.entities.ParticipantFailResponse;
@@ -14,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class ParticipantService {
@@ -94,7 +96,7 @@ public class ParticipantService {
     }
 
     public List<Participant> getAll() {
-        LOGGER.info("Printing participant list");
+        LOGGER.info("Getting participant list");
         return participantDAO.getAll();
     }
 }

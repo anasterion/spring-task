@@ -58,8 +58,8 @@ public class LotteryService {
 
         if (wrappedLottery.isPresent()) {
             if (!wrappedLottery.get().getLotteryStatus().equals("IN PROGRESS")) {
-                LOGGER.error("Failed to stop lottery " + wrappedLottery.get().getTitle() + " registration");
-                return new LotteryFailResponse("Fail", "Lottery{" + wrappedLottery.get().getTitle() + "} already ended");
+                LOGGER.error("Failed to stop lottery registration with id " + lotteryId);
+                return new LotteryFailResponse("Fail", "Lottery with id " + lotteryId + " already ended");
             }
 
             wrappedLottery.get().setLotteryStatus("ENDED");
@@ -69,7 +69,7 @@ public class LotteryService {
             return new LotterySuccessResponse("OK");
         }
 
-        LOGGER.error("Failed to stop lottery " + wrappedLottery.get().getTitle() + " registration");
+        LOGGER.error("Failed to stop lottery registration with id " + lotteryId);
         return new LotteryFailResponse("Fail", "Lottery with id - " + lotteryId + ", doesn't exist");
     }
 }
