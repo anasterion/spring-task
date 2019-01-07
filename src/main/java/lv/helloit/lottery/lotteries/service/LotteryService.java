@@ -50,7 +50,7 @@ public class LotteryService {
         return lotteryList;
     }
 
-    public boolean checkIfDuplicate(String value) {
-        return lotteryDAO.checkIfDuplicate(value);
+    public boolean checkIfDuplicate(String value, String field) {
+        return lotteryDAO.checkIfDuplicate(value, field);
     }
 }

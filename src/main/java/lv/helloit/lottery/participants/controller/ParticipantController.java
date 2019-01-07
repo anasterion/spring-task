@@ -55,9 +55,9 @@ public class ParticipantController {
             return new ParticipantFailResponse("Fail", errorMessage);
         }
 
-        participantService.assignLottery(participant);
+        ParticipantResponse response = participantService.assignLottery(participant);
 
-        return new ParticipantSuccessResponse("OK");
+        return response;
     }
 
     @GetMapping(value = "/get-participant-list")

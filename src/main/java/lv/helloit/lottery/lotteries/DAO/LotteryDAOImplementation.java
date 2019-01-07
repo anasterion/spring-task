@@ -53,10 +53,10 @@ public class LotteryDAOImplementation implements LotteryDAO {
     }
 
     @Override
-    public boolean checkIfDuplicate(String value) {
+    public boolean checkIfDuplicate(String value, String field) {
         Session session = sessionFactory.openSession();
 
-        Query<Lottery> query = session.createQuery("from Lottery l where l.title like '" + value + "'", Lottery.class);
+        Query<Lottery> query = session.createQuery("from Lottery l where l." + field + " like '" + value + "'", Lottery.class);
         List<Lottery> employees = query.getResultList();
 
         if (employees.size() == 0) {

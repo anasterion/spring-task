@@ -32,6 +32,18 @@ public class ParticipantService {
         Optional<Lottery> wrappedLottery = lotteryDAO.getById(Long.valueOf(participant.getLotteryId()));
 
         if (wrappedLottery.isPresent()) {
+            // check if limit is available
+            wrappedLottery.get().setLotteryCapacity(wrappedLottery.get().getParticipants().size());
+            if (wrappedLottery.get().getLotteryCapacity().equals(Integer.valueOf(wrappedLottery.get().getLimit()))) {
+                return new ParticipantFailResponse("Fail", "Lottery{" + wrappedLottery.get().getTitle() + "} : limit reached, " +
+                        "please choose another one from available list");
+            // check if status is in progress
+            } else if (!wrappedLottery.get().getLotteryStatus().equals("IN PROGRESS")) {
+                return new ParticipantFailResponse("Fail", "Lottery: " + wrappedLottery.get().getTitle() + " is concluded, " +
+                        "please choose another one with status - In progress");
+            }
+
+            // start participant registration
             LOGGER.info("Starting to register new participant");
             participant.setLottery(wrappedLottery.get());
             participant.setCode(generateCode(participant.getEmail()));
@@ -46,25 +58,35 @@ public class ParticipantService {
     }
 
     public String generateCode(String email) {
-        Date date = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("DDMMYY");
-        String stringDate = simpleDateFormat.format(date);
-        char[] tmpArray = email.toCharArray();
+        String stringDate = "";
 
-        if (tmpArray.length < 10) {
-            stringDate = stringDate + "0" + tmpArray.length;
-        } else {
-            stringDate = stringDate + tmpArray.length;
+        while (true) {
+            Date date = new Date();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("DDMMYY");
+            stringDate = simpleDateFormat.format(date);
+            char[] tmpArray = email.toCharArray();
+
+            if (tmpArray.length < 10) {
+                stringDate = stringDate + "0" + tmpArray.length;
+            } else {
+                stringDate = stringDate + tmpArray.length;
+            }
+
+            Random rand = new Random();
+            String tmpString = "";
+
+            for (int i = 0; i < 8; i++) {
+                tmpString = tmpString + rand.nextInt(10);
+            }
+
+            stringDate = stringDate + tmpString;
+
+            // checking generated code uniqueness
+            if (!participantDAO.checkIfDuplicate(stringDate, "code")) {
+                continue;
+            }
+            break;
         }
-
-        Random rand = new Random();
-        String tmpString = "";
-
-        for (int i = 0; i < 8; i++) {
-            tmpString = tmpString + rand.nextInt(10);
-        }
-
-        stringDate = stringDate + tmpString;
 
         return stringDate;
     }

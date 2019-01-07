@@ -11,7 +11,7 @@
         <property name = "hibernate.connection.username">ewqljoouajtnii</property>
         <property name = "hibernate.connection.password">b90a2fca5081c9f93e15f639ec605b94933def732f63bec1f2683d714451cf7f</property>
 
-        <property name="show_sql">true</property>
+        <property name="show_sql">false</property>
         <property name="connection.autocommit">true</property>
         <property name="transaction.auto_close_session">true</property>
         <property name="hibernate.format_sql">true</property>

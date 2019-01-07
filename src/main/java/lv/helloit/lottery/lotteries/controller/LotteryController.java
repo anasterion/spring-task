@@ -40,7 +40,7 @@ public class LotteryController {
                 limitErrorMessage = bindingResult.getFieldError("limit").getField() + " : " +
                         bindingResult.getFieldError("limit").getDefaultMessage() + "\n";
 
-                if (!lotteryService.checkIfDuplicate(lottery.getTitle())) {
+                if (!lotteryService.checkIfDuplicate(lottery.getTitle(), "title")) {
                     titleErrorMessage = "title : value should be unique\n";
                 }
             }
@@ -49,7 +49,7 @@ public class LotteryController {
             return new LotteryFailResponse("Fail", errorMessage);
         }
 
-        if (!lotteryService.checkIfDuplicate(lottery.getTitle())) {
+        if (!lotteryService.checkIfDuplicate(lottery.getTitle(), "title")) {
             String errorMessage = "title : value should be unique\n" + limitErrorMessage;
             return new LotteryFailResponse("Fail", errorMessage);
         }

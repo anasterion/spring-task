@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface LotteryDAO {
     LotteryResponse startRegistration(Lottery lottery);
 
-    boolean checkIfDuplicate(String value);
+    boolean checkIfDuplicate(String value, String field);
 
     List<Lottery> getAll();
 

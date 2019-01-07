@@ -10,4 +10,6 @@ public interface ParticipantDAO {
     ParticipantResponse registerInLottery(Participant participant);
 
     List<Participant> getAll();
+
+    boolean checkIfDuplicate(String value, String field);
 }
