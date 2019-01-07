@@ -28,23 +28,16 @@ public class ParticipantService {
         this.lotteryDAO = lotteryDAO;
     }
 
-    public ParticipantResponse registerInLottery(Participant participant) {
-        LOGGER.info("Starting to register new participant");
-
-        ParticipantResponse response = participantDAO.registerInLottery(participant);
-        LOGGER.info("Created participant -> " + participant);
-
-        return response;
-    }
-
     public ParticipantResponse assignLottery(Participant participant) {
-        Optional<Lottery> wrappedLottery = lotteryDAO.getById(participant.getLotteryId());
+        Optional<Lottery> wrappedLottery = lotteryDAO.getById(Long.valueOf(participant.getLotteryId()));
 
         if (wrappedLottery.isPresent()) {
+            LOGGER.info("Starting to register new participant");
             participant.setLottery(wrappedLottery.get());
             participant.setCode(generateCode(participant.getEmail()));
 
             participantDAO.registerInLottery(participant);
+            LOGGER.info("Created participant -> " + participant);
 
             return new ParticipantSuccessResponse("OK");
         }

@@ -3,7 +3,7 @@ package lv.helloit.lottery.lotteries.DAO;
 import lv.helloit.lottery.lotteries.entities.Lottery;
 import lv.helloit.lottery.lotteries.entities.LotteryResponse;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public interface LotteryDAO {
@@ -11,7 +11,7 @@ public interface LotteryDAO {
 
     boolean checkIfDuplicate(String value);
 
-    Collection<Lottery> getAll();
+    List<Lottery> getAll();
 
     Optional<Lottery> getById(Long id);
 }

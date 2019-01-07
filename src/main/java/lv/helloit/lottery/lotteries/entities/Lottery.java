@@ -1,6 +1,5 @@
 package lv.helloit.lottery.lotteries.entities;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lv.helloit.lottery.lotteries.constraints.IsGreaterThanZero;
 import lv.helloit.lottery.participants.entities.Participant;
@@ -36,9 +35,13 @@ public class Lottery {
     @Column(name = "lottery_status")
     private String lotteryStatus;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "lottery")
-    @JsonIgnore // had issue with infinite jackson loop in logs, fixed by adding json ignore annotation here
+    @Column(name = "lottery_capacity")
+    private Integer lotteryCapacity;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "lottery")
+    @JsonIgnore
     private List<Participant> participants;
+
 
     public Long getId() {
         return id;
@@ -96,6 +99,14 @@ public class Lottery {
         this.participants = participants;
     }
 
+    public Integer getLotteryCapacity() {
+        return lotteryCapacity;
+    }
+
+    public void setLotteryCapacity(Integer lotteryCapacity) {
+        this.lotteryCapacity = lotteryCapacity;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -106,12 +117,14 @@ public class Lottery {
                 Objects.equals(limit, lottery.limit) &&
                 Objects.equals(startDate, lottery.startDate) &&
                 Objects.equals(endDate, lottery.endDate) &&
-                Objects.equals(lotteryStatus, lottery.lotteryStatus);
+                Objects.equals(lotteryStatus, lottery.lotteryStatus) &&
+                Objects.equals(lotteryCapacity, lottery.lotteryCapacity) &&
+                Objects.equals(participants, lottery.participants);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, limit, startDate, endDate, lotteryStatus);
+        return Objects.hash(id, title, limit, startDate, endDate, lotteryStatus, lotteryCapacity, participants);
     }
 
     @Override
@@ -120,9 +133,11 @@ public class Lottery {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", limit='" + limit + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
+                ", startDate='" + startDate + '\'' +
+                ", endDate='" + endDate + '\'' +
                 ", lotteryStatus='" + lotteryStatus + '\'' +
+                ", lotteryCapacity=" + lotteryCapacity +
+                ", participants=" + participants +
                 '}';
     }
 }

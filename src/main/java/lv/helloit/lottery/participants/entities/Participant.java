@@ -19,8 +19,9 @@ public class Participant {
     @Column(name = "id")
     private Long id;
 
+    @IsGreaterThanZero
     @Column(name = "lottery_id")
-    private Long lotteryId;
+    private String lotteryId;
 
     @Email(message = "should be valid email")
     @NotBlank(message = "can't be empty")
@@ -81,11 +82,11 @@ public class Participant {
         this.lottery = lottery;
     }
 
-    public Long getLotteryId() {
+    public String getLotteryId() {
         return lotteryId;
     }
 
-    public void setLotteryId(Long lotteryId) {
+    public void setLotteryId(String lotteryId) {
         this.lotteryId = lotteryId;
     }
 
@@ -115,7 +116,7 @@ public class Participant {
                 ", email='" + email + '\'' +
                 ", age='" + age + '\'' +
                 ", code=" + code +
-                ", lottery=" + lottery +
+                ", lottery=" + (lottery != null ? lottery.getId() : "") +
                 '}';
     }
 }

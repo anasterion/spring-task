@@ -3,6 +3,7 @@ package lv.helloit.lottery.lotteries.DAO;
 import lv.helloit.lottery.lotteries.entities.Lottery;
 import lv.helloit.lottery.lotteries.entities.LotteryResponse;
 import lv.helloit.lottery.lotteries.entities.LotterySuccessResponse;
+import lv.helloit.lottery.lotteries.service.LotteryService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -17,8 +18,13 @@ import java.util.Optional;
 
 @Repository
 public class LotteryDAOImplementation implements LotteryDAO {
+    private final SessionFactory sessionFactory;
+    //private final LotteryService lotteryService;
+
     @Autowired
-    private SessionFactory sessionFactory;
+    public LotteryDAOImplementation(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public LotteryResponse startRegistration(Lottery lottery) {

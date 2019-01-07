@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class LotteryService {
@@ -38,9 +38,16 @@ public class LotteryService {
         return response;
     }
 
-    public Collection<Lottery> getAll() {
-        LOGGER.info("Printing lottery list");
-        return lotteryDAO.getAll();
+    public List<Lottery> getAll() {
+        LOGGER.info("Getting lottery list");
+
+        List<Lottery> lotteryList = lotteryDAO.getAll();
+
+        for (Lottery l : lotteryList) {
+            l.setLotteryCapacity(l.getParticipants().size());
+        }
+
+        return lotteryList;
     }
 
     public boolean checkIfDuplicate(String value) {

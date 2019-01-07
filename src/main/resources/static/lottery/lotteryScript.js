@@ -39,7 +39,7 @@ function addLottery(lottery) {
     tr.innerHTML = `
         <td>${lottery.id}</td>
         <td>${lottery.title}</td>
-        <td>${lottery.limit}</td>
+        <td>${lottery.lotteryCapacity + ' / ' + lottery.limit}</td>
         <td>${lottery.lotteryStatus}</td>
         <td>${lottery.startDate}</td>
 `;
