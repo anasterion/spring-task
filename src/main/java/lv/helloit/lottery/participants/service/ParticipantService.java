@@ -51,6 +51,7 @@ public class ParticipantService {
             lotteryDAO.update(wrappedLottery.get());
             participant.setLottery(wrappedLottery.get());
             participant.setCode(generateCode(participant.getEmail()));
+            participant.setStatus("PENDING");
 
             participantDAO.registerInLottery(participant);
             LOGGER.info("Created participant -> " + participant);

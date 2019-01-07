@@ -43,6 +43,7 @@ function addParticipant(participant) {
         <td>${participant.email}</td>
         <td>${participant.age}</td>
         <td>${participant.code}</td>
+        <td>${participant.status}</td>
         <td>${participant.lottery ? participant.lottery.title : ""}</td>
         <td>${participant.lottery ? participant.lottery.lotteryStatus : ""}</td>
 `;

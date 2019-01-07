@@ -12,4 +12,6 @@ public interface ParticipantDAO {
     List<Participant> getAll();
 
     boolean checkIfDuplicate(String value, String field);
+
+    void update(Participant participant);
 }

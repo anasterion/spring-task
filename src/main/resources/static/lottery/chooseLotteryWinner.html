@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Stop Lottery</title>
+    <title>Choose Winner</title>
     <style type="text/css">
         tbody { font-family: 'Montserrat', sans-serif; }
         tr { font-family: 'Merriweather', serif; }
@@ -19,7 +19,7 @@
 </head>
 <body>
 
-<h1 class="display-4 text-center my-4"><p>Stop Lottery</p></h1>
+<h1 class="display-4 text-center my-4"><p>Choose Winner</p></h1>
 
 <hr>
 
@@ -67,7 +67,7 @@
                     Please confirm your choice.
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary center-block" type="submit" onclick="stopLottery()">Confirm</button>
+                    <button class="btn btn-primary center-block" type="submit" onclick="chooseWinnerLottery()">Confirm</button>
                 </div>
             </div>
         </div>
@@ -87,7 +87,7 @@
         crossorigin="anonymous"></script>
 <script src="lotteryScript.js" type="text/javascript"></script>
 <script>
-    loadLotteries();
+    loadEndedLotteries();
 </script>
 
 </body>

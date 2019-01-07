@@ -1,6 +1,6 @@
 package lv.helloit.lottery.lotteries.controller;
 
-import lv.helloit.lottery.lotteries.entities.IdValidationWrapper;
+import lv.helloit.lottery.IdValidationWrapper;
 import lv.helloit.lottery.lotteries.entities.Lottery;
 import lv.helloit.lottery.lotteries.entities.LotteryFailResponse;
 import lv.helloit.lottery.lotteries.entities.LotteryResponse;
@@ -63,6 +63,12 @@ public class LotteryController {
         return lotteryService.getAll();
     }
 
+    @GetMapping(value = "get-lottery-list/{status}")
+    public Collection<Lottery> getWithStatus(@PathVariable String status) {
+        return lotteryService.getWithStatus(status);
+    }
+
+    @SuppressWarnings("Duplicates")
     @PostMapping(value = "/stop-registration", produces = MediaType.APPLICATION_JSON_VALUE)
     public LotteryResponse stopRegistration(@Valid @RequestBody IdValidationWrapper id, BindingResult bindingResult) {
         String idErrorMessage = "";
@@ -78,8 +84,25 @@ public class LotteryController {
             return new LotteryFailResponse("Fail", idErrorMessage);
         }
 
-        LotteryResponse response = lotteryService.stopRegistration(Long.valueOf(id.getId()));
+        return lotteryService.stopRegistration(Long.valueOf(id.getId()));
+    }
 
-        return response;
+    @SuppressWarnings("Duplicates")
+    @PostMapping(value = "/choose-winner", produces = MediaType.APPLICATION_JSON_VALUE)
+    public LotteryResponse chooseWinner(@Valid @RequestBody IdValidationWrapper id, BindingResult bindingResult) {
+        String idErrorMessage = "";
+
+        if (bindingResult.hasErrors()) {
+            int idErrorCount = bindingResult.getFieldErrorCount("id");
+
+            if (idErrorCount > 0) {
+                idErrorMessage = bindingResult.getFieldError("id").getField() + " : " +
+                        bindingResult.getFieldError("id").getDefaultMessage() + "\n";
+            }
+
+            return new LotteryFailResponse("Fail", idErrorMessage);
+        }
+
+        return lotteryService.chooseWinner(Long.valueOf(id.getId()));
     }
 }

@@ -35,6 +35,9 @@ public class Participant {
     @Column(name = "code")
     private String code;
 
+    @Column(name = "status")
+    private String status;
+
     @ManyToOne
     @JoinColumn(name = "participant_lottery_id")
     private Lottery lottery;
@@ -90,6 +93,14 @@ public class Participant {
         this.lotteryId = lotteryId;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -100,12 +111,13 @@ public class Participant {
                 Objects.equals(email, that.email) &&
                 Objects.equals(age, that.age) &&
                 Objects.equals(code, that.code) &&
+                Objects.equals(status, that.status) &&
                 Objects.equals(lottery, that.lottery);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, lotteryId, email, age, code, lottery);
+        return Objects.hash(id, lotteryId, email, age, code, status, lottery);
     }
 
     @Override
@@ -115,7 +127,8 @@ public class Participant {
                 ", lotteryId='" + lotteryId + '\'' +
                 ", email='" + email + '\'' +
                 ", age='" + age + '\'' +
-                ", code=" + code +
+                ", code='" + code + '\'' +
+                ", status='" + status + '\'' +
                 ", lottery=" + (lottery != null ? lottery.getId() : "") +
                 '}';
     }

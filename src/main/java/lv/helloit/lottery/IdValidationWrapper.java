@@ -1,4 +1,4 @@
-package lv.helloit.lottery.lotteries.entities;
+package lv.helloit.lottery;
 
 import lv.helloit.lottery.lotteries.constraints.IsGreaterThanZero;
 

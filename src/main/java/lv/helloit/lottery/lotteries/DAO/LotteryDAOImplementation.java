@@ -26,6 +26,7 @@ public class LotteryDAOImplementation implements LotteryDAO {
         this.sessionFactory = sessionFactory;
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public LotteryResponse startRegistration(Lottery lottery) {
         Session session = sessionFactory.openSession();
@@ -43,15 +44,25 @@ public class LotteryDAOImplementation implements LotteryDAO {
     public List<Lottery> getAll() {
         Session session = sessionFactory.openSession();
 
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<Lottery> query = builder.createQuery(Lottery.class);
-        query.select(query.from(Lottery.class));
-        List<Lottery> lotteryList = session.createQuery(query).getResultList();
+        Query<Lottery> query = session.createQuery("from Lottery l order by l.id", Lottery.class);
+        List<Lottery> lotteryList = query.getResultList();
 
         session.close();
         return lotteryList;
     }
 
+    @Override
+    public List<Lottery> getWithStatus(String status) {
+        Session session = sessionFactory.openSession();
+
+        Query<Lottery> query = session.createQuery("from Lottery l where l.lotteryStatus like '" + status + "' order by l.id", Lottery.class);
+        List<Lottery> lotteryList = query.getResultList();
+
+        session.close();
+        return lotteryList;
+    }
+
+    @SuppressWarnings("Duplicates")
     @Override
     public boolean checkIfDuplicate(String value, String field) {
         Session session = sessionFactory.openSession();
@@ -77,6 +88,7 @@ public class LotteryDAOImplementation implements LotteryDAO {
         return Optional.ofNullable(lottery);
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public void update(Lottery lottery) {
         Session session = sessionFactory.openSession();

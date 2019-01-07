@@ -23,6 +23,7 @@ public class ParticipantDAOImplementation implements ParticipantDAO {
         this.sessionFactory = sessionFactory;
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public ParticipantResponse registerInLottery(Participant participant) {
         Session session = sessionFactory.openSession();
@@ -47,6 +48,7 @@ public class ParticipantDAOImplementation implements ParticipantDAO {
         return session.createQuery(query).getResultList();
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public boolean checkIfDuplicate(String value, String field) {
         Session session = sessionFactory.openSession();
@@ -61,5 +63,17 @@ public class ParticipantDAOImplementation implements ParticipantDAO {
 
         session.close();
         return false;
+    }
+
+    @SuppressWarnings("Duplicates")
+    @Override
+    public void update(Participant participant) {
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+
+        session.update(participant);
+
+        tx.commit();
+        session.close();
     }
 }

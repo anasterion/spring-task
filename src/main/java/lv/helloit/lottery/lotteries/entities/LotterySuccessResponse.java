@@ -5,6 +5,7 @@ import java.util.Objects;
 public class LotterySuccessResponse extends LotteryResponse {
     private Long id;
     private String status;
+    private String winnerCode;
 
     public LotterySuccessResponse() {
     }
@@ -16,6 +17,11 @@ public class LotterySuccessResponse extends LotteryResponse {
 
     public LotterySuccessResponse(String status) {
         this.status = status;
+    }
+
+    public LotterySuccessResponse(String status, String winnerCode) {
+        this.status = status;
+        this.winnerCode = winnerCode;
     }
 
     public Long getId() {
@@ -34,18 +40,27 @@ public class LotterySuccessResponse extends LotteryResponse {
         this.status = status;
     }
 
+    public String getWinnerCode() {
+        return winnerCode;
+    }
+
+    public void setWinnerCode(String winnerCode) {
+        this.winnerCode = winnerCode;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LotterySuccessResponse that = (LotterySuccessResponse) o;
         return Objects.equals(id, that.id) &&
-                Objects.equals(status, that.status);
+                Objects.equals(status, that.status) &&
+                Objects.equals(winnerCode, that.winnerCode);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, status);
+        return Objects.hash(id, status, winnerCode);
     }
 
     @Override
@@ -53,6 +68,7 @@ public class LotterySuccessResponse extends LotteryResponse {
         return "LotterySuccessResponse{" +
                 "id=" + id +
                 ", status='" + status + '\'' +
+                ", winnerCode='" + winnerCode + '\'' +
                 '}';
     }
 }

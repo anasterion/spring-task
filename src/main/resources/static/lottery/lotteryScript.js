@@ -42,6 +42,7 @@ function addLottery(lottery) {
         <td>${lottery.lotteryCapacity ? lottery.lotteryCapacity + " / " + lottery.limit : "0 / " + lottery.limit}</td>
         <td>${lottery.lotteryStatus}</td>
         <td>${lottery.startDate}</td>
+        <td>${lottery.endDate ? lottery.endDate : "-"}</td>
 `;
 
     document.getElementById('table-body').appendChild(tr);
@@ -62,6 +63,51 @@ function stopLottery() {
     ).then(response => {
         if (response.status === 'OK') {
             window.location.href = "/lottery/lotteryList.html";
+        } else {
+            alert(response.reason);
+        }
+    });
+}
+
+function loadEndedLotteries() {
+    fetch('/get-lottery-list/ENDED', {
+        method: 'GET'
+    }).then(
+        resp => resp.json()
+    ).then(lotteries => {
+        for (const lottery of lotteries) {
+            addLottery(lottery);
+        }
+    });
+}
+
+function loadInProgressLotteries() {
+    fetch('/get-lottery-list/IN%20PROGRESS', {
+        method: 'GET'
+    }).then(
+        resp => resp.json()
+    ).then(lotteries => {
+        for (const lottery of lotteries) {
+            addLottery(lottery);
+        }
+    });
+}
+
+function chooseWinnerLottery() {
+    const id = document.getElementById('id').value;
+
+    fetch('/choose-winner', {
+        method: 'POST',
+        body: JSON.stringify({
+            id: id,
+        }),
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8'
+        }
+    }).then((resp) => resp.json()
+    ).then(response => {
+        if (response.status === 'OK') {
+            window.location.href = "/lottery/winnerList.html";
         } else {
             alert(response.reason);
         }

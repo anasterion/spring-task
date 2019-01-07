@@ -5,24 +5,26 @@ import lv.helloit.lottery.lotteries.entities.Lottery;
 import lv.helloit.lottery.lotteries.entities.LotteryFailResponse;
 import lv.helloit.lottery.lotteries.entities.LotteryResponse;
 import lv.helloit.lottery.lotteries.entities.LotterySuccessResponse;
+import lv.helloit.lottery.participants.DAO.ParticipantDAO;
+import lv.helloit.lottery.participants.entities.Participant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class LotteryService {
     private final static Logger LOGGER = LoggerFactory.getLogger(LotteryService.class);
     private final LotteryDAO lotteryDAO;
+    private final ParticipantDAO participantDAO;
 
     @Autowired
-    public LotteryService(LotteryDAO lotteryDAO) {
+    public LotteryService(LotteryDAO lotteryDAO, ParticipantDAO participantDAO) {
         this.lotteryDAO = lotteryDAO;
+        this.participantDAO = participantDAO;
     }
 
     public LotteryResponse startRegistration(Lottery lottery) {
@@ -44,9 +46,7 @@ public class LotteryService {
     public List<Lottery> getAll() {
         LOGGER.info("Getting lottery list");
 
-        List<Lottery> lotteryList = lotteryDAO.getAll();
-
-        return lotteryList;
+        return lotteryDAO.getAll();
     }
 
     public boolean checkIfDuplicate(String value, String field) {
@@ -62,6 +62,12 @@ public class LotteryService {
                 return new LotteryFailResponse("Fail", "Lottery with id " + lotteryId + " already ended");
             }
 
+            Date date = new Date();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("DD.MM.YY HH:mm");
+            String strDate = simpleDateFormat.format(date);
+
+            wrappedLottery.get().setEndDate(strDate);
+
             wrappedLottery.get().setLotteryStatus("ENDED");
             lotteryDAO.update(wrappedLottery.get());
 
@@ -71,5 +77,46 @@ public class LotteryService {
 
         LOGGER.error("Failed to stop lottery registration with id " + lotteryId);
         return new LotteryFailResponse("Fail", "Lottery with id - " + lotteryId + ", doesn't exist");
+    }
+
+    public List<Lottery> getWithStatus(String status) {
+        return lotteryDAO.getWithStatus(status);
+    }
+
+    public LotteryResponse chooseWinner(Long id) {
+        Optional<Lottery> wrappedLottery = lotteryDAO.getById(id);
+
+        if (wrappedLottery.isPresent()) {
+
+            if (wrappedLottery.get().getLotteryCapacity() == null) {
+                return new LotteryFailResponse("Fail", "No participants found for lottery with id - " + id);
+            }
+
+            // check so winner can't be chosen multiple times
+            if (!wrappedLottery.get().getParticipants().get(0).getStatus().equals("PENDING")) {
+                return new LotteryFailResponse("Fail", "Lottery with id - " + id + " already has winner");
+            }
+
+            for (Participant p : wrappedLottery.get().getParticipants()) {
+                p.setStatus("LOOSE");
+                participantDAO.update(p);
+            }
+
+            // applying equal chance winning logic
+            LOGGER.info("Initial collection - " + wrappedLottery.get().getParticipants());
+            Collections.shuffle(wrappedLottery.get().getParticipants());
+            LOGGER.info("Shuffled collection - " + wrappedLottery.get().getParticipants());
+
+            Random rand = new Random();
+            int winnerNumber = rand.nextInt((wrappedLottery.get().getParticipants().size() - 1) + 1);
+            LOGGER.info("Winner collection index number and code are - " + (winnerNumber + 1) + " : " + wrappedLottery.get().getParticipants().get(winnerNumber).getCode());
+
+            wrappedLottery.get().getParticipants().get(winnerNumber).setStatus("WIN");
+            participantDAO.update(wrappedLottery.get().getParticipants().get(winnerNumber));
+
+            return new LotterySuccessResponse("OK", wrappedLottery.get().getParticipants().get(winnerNumber).getCode());
+        }
+
+        return new LotteryFailResponse("Fail", "Check available lotteries from list and try again");
     }
 }
