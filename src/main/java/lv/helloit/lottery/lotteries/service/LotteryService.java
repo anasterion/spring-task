@@ -43,14 +43,13 @@ public class LotteryService {
 
         List<Lottery> lotteryList = lotteryDAO.getAll();
 
-        for (Lottery l : lotteryList) {
-            l.setLotteryCapacity(l.getParticipants().size());
-        }
-
         return lotteryList;
     }
 
     public boolean checkIfDuplicate(String value, String field) {
         return lotteryDAO.checkIfDuplicate(value, field);
+    }
+
+    public void stopRegistration(Long lotteryId) {
     }
 }

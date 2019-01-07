@@ -61,4 +61,19 @@ public class LotteryController {
     public Collection<Lottery> getAll() {
         return lotteryService.getAll();
     }
+
+    @PostMapping(value = "/stop-registration", produces = MediaType.APPLICATION_JSON_VALUE)
+    public LotteryResponse stopRegistration(@RequestParam String id) {
+        Long lotteryId;
+
+        try {
+            lotteryId = Long.valueOf(id);
+        } catch (NumberFormatException e) {
+            return new LotteryFailResponse("Fail", "id: value can't be empty and should be a number greater than zero");
+        }
+
+        lotteryService.stopRegistration(lotteryId);
+
+        return null;
+    }
 }

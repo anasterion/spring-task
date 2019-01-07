@@ -33,8 +33,9 @@ public class ParticipantService {
 
         if (wrappedLottery.isPresent()) {
             // check if limit is available
-            wrappedLottery.get().setLotteryCapacity(wrappedLottery.get().getParticipants().size());
-            if (wrappedLottery.get().getLotteryCapacity().equals(Integer.valueOf(wrappedLottery.get().getLimit()))) {
+            wrappedLottery.get().setLotteryCapacity(wrappedLottery.get().getParticipants().size() + 1);
+
+            if (wrappedLottery.get().getLotteryCapacity() > (Integer.valueOf(wrappedLottery.get().getLimit()))) {
                 return new ParticipantFailResponse("Fail", "Lottery{" + wrappedLottery.get().getTitle() + "} : limit reached, " +
                         "please choose another one from available list");
             // check if status is in progress
@@ -45,6 +46,7 @@ public class ParticipantService {
 
             // start participant registration
             LOGGER.info("Starting to register new participant");
+            lotteryDAO.update(wrappedLottery.get());
             participant.setLottery(wrappedLottery.get());
             participant.setCode(generateCode(participant.getEmail()));
 

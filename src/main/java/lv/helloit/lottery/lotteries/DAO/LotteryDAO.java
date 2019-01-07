@@ -14,4 +14,6 @@ public interface LotteryDAO {
     List<Lottery> getAll();
 
     Optional<Lottery> getById(Long id);
+
+    void update(Lottery lottery);
 }

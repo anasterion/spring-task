@@ -3,7 +3,6 @@ package lv.helloit.lottery.participants.controller;
 import lv.helloit.lottery.participants.entities.Participant;
 import lv.helloit.lottery.participants.entities.ParticipantFailResponse;
 import lv.helloit.lottery.participants.entities.ParticipantResponse;
-import lv.helloit.lottery.participants.entities.ParticipantSuccessResponse;
 import lv.helloit.lottery.participants.service.ParticipantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

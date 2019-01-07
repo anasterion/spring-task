@@ -19,7 +19,6 @@ import java.util.Optional;
 @Repository
 public class LotteryDAOImplementation implements LotteryDAO {
     private final SessionFactory sessionFactory;
-    //private final LotteryService lotteryService;
 
     @Autowired
     public LotteryDAOImplementation(SessionFactory sessionFactory) {
@@ -75,5 +74,16 @@ public class LotteryDAOImplementation implements LotteryDAO {
 
         session.close();
         return Optional.ofNullable(lottery);
+    }
+
+    @Override
+    public void update(Lottery lottery) {
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+
+        session.update(lottery);
+
+        tx.commit();
+        session.close();
     }
 }
