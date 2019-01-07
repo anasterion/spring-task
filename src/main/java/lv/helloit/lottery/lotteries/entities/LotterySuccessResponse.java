@@ -14,6 +14,10 @@ public class LotterySuccessResponse extends LotteryResponse {
         this.status = status;
     }
 
+    public LotterySuccessResponse(String status) {
+        this.status = status;
+    }
+
     public Long getId() {
         return id;
     }

@@ -62,18 +62,22 @@ public class LotteryController {
         return lotteryService.getAll();
     }
 
-    @PostMapping(value = "/stop-registration", produces = MediaType.APPLICATION_JSON_VALUE)
-    public LotteryResponse stopRegistration(@RequestParam String id) {
+    @PostMapping(value = "/stop-registration/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public LotteryResponse stopRegistration(@PathVariable String id) {
         Long lotteryId;
 
         try {
             lotteryId = Long.valueOf(id);
+
+            if (lotteryId <= 0) {
+                return new LotteryFailResponse("Fail", "id: value can't be empty and should be a number greater than zero");
+            }
         } catch (NumberFormatException e) {
             return new LotteryFailResponse("Fail", "id: value can't be empty and should be a number greater than zero");
         }
 
-        lotteryService.stopRegistration(lotteryId);
+        LotteryResponse response = lotteryService.stopRegistration(lotteryId);
 
-        return null;
+        return response;
     }
 }

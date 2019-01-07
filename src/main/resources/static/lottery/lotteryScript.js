@@ -46,3 +46,18 @@ function addLottery(lottery) {
 
     document.getElementById('table-body').appendChild(tr);
 }
+
+function stopLottery() {
+    const id = document.getElementById('id').value;
+
+    fetch('/stop-registration/' + id, {
+        method: 'POST'
+    }).then((resp) => resp.json()
+    ).then(response => {
+        if (response.status === 'OK') {
+            window.location.href = "/lottery/lotteryList.html";
+        } else {
+            alert(response.reason);
+        }
+    });
+}
