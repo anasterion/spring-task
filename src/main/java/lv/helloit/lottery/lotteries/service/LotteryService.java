@@ -88,7 +88,7 @@ public class LotteryService {
 
         if (wrappedLottery.isPresent()) {
 
-            if (wrappedLottery.get().getLotteryCapacity() == null) {
+            if (wrappedLottery.get().getParticipantCount() == null) {
                 return new LotteryFailResponse("Fail", "No participants found for lottery with id - " + id);
             }
 
@@ -96,6 +96,9 @@ public class LotteryService {
             if (!wrappedLottery.get().getParticipants().get(0).getStatus().equals("PENDING")) {
                 return new LotteryFailResponse("Fail", "Lottery with id - " + id + " already has winner");
             }
+
+            wrappedLottery.get().setLotteryStatus("FINISHED");
+            lotteryDAO.update(wrappedLottery.get());
 
             for (Participant p : wrappedLottery.get().getParticipants()) {
                 p.setStatus("LOOSE");
@@ -118,5 +121,9 @@ public class LotteryService {
         }
 
         return new LotteryFailResponse("Fail", "Check available lotteries from list and try again");
+    }
+
+    public List<Lottery> getStatistics() {
+        return lotteryDAO.getWithStatus("FINISHED");
     }
 }

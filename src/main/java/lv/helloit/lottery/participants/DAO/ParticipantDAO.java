@@ -14,4 +14,8 @@ public interface ParticipantDAO {
     boolean checkIfDuplicate(String value, String field);
 
     void update(Participant participant);
+
+    List<Participant> getWinnerList();
+
+    List<Participant> getConcludedLotteryParticipants();
 }

@@ -10,8 +10,6 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
 @Repository
@@ -37,15 +35,16 @@ public class ParticipantDAOImplementation implements ParticipantDAO {
         return new ParticipantSuccessResponse("OK");
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public List<Participant> getAll() {
         Session session = sessionFactory.openSession();
 
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<Participant> query = builder.createQuery(Participant.class);
-        query.select(query.from(Participant.class));
+        Query<Participant> query = session.createQuery("from Participant p where p.status like 'PENDING' order by p.id", Participant.class);
+        List<Participant> participantList = query.getResultList();
 
-        return session.createQuery(query).getResultList();
+        session.close();
+        return participantList;
     }
 
     @SuppressWarnings("Duplicates")
@@ -75,5 +74,28 @@ public class ParticipantDAOImplementation implements ParticipantDAO {
 
         tx.commit();
         session.close();
+    }
+
+    @SuppressWarnings("Duplicates")
+    @Override
+    public List<Participant> getWinnerList() {
+        Session session = sessionFactory.openSession();
+
+        Query<Participant> query = session.createQuery("from Participant p where p.status like 'WIN' order by p.id", Participant.class);
+        List<Participant> participantList = query.getResultList();
+
+        session.close();
+        return participantList;
+    }
+
+    @Override
+    public List<Participant> getConcludedLotteryParticipants() {
+        Session session = sessionFactory.openSession();
+
+        Query<Participant> query = session.createQuery("from Participant p where p.status not like 'PENDING' order by p.id", Participant.class);
+        List<Participant> participantList = query.getResultList();
+
+        session.close();
+        return participantList;
     }
 }

@@ -105,4 +105,9 @@ public class LotteryController {
 
         return lotteryService.chooseWinner(Long.valueOf(id.getId()));
     }
+
+    @GetMapping(value = "stats", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Collection<Lottery> getStatistics() {
+        return lotteryService.getStatistics();
+    }
 }

@@ -50,3 +50,59 @@ function addParticipant(participant) {
 
     document.getElementById('table-body').appendChild(tr);
 }
+
+function loadWinnerParticipants() {
+    fetch('/get-participant-winner-list', {
+        method: 'GET'
+    }).then(
+        resp => resp.json()
+    ).then(participants => {
+        for (const participant of participants) {
+            addWithStatusParticipant(participant);
+        }
+    });
+}
+
+function addWithStatusParticipant(participant) {
+    const tr = document.createElement('tr');
+
+    tr.innerHTML = `
+        <td>${participant.id}</td>
+        <td>${participant.email}</td>
+        <td>${participant.age}</td>
+        <td>${participant.code}</td>
+        <td>${participant.lottery.title}</td>
+        <td>${participant.lottery.endDate}</td>
+`;
+
+    document.getElementById('table-body').appendChild(tr);
+}
+
+function loadConcludedLotteryParticipants() {
+    fetch('/get-concluded-participant-list', {
+        method: 'GET'
+    }).then(
+        resp => resp.json()
+    ).then(participants => {
+        for (const participant of participants) {
+            addConcludedParticipant(participant);
+        }
+    });
+}
+
+function addConcludedParticipant (participant) {
+    const tr = document.createElement('tr');
+
+    tr.innerHTML = `
+        <td>${participant.id}</td>
+        <td>${participant.email}</td>
+        <td>${participant.age}</td>
+        <td>${participant.code}</td>
+        <td>${participant.lottery.title}</td>
+        <td>${participant.lottery.startDate}</td>
+        <td>${participant.lottery.endDate}</td>
+        <td>${participant.status}</td>
+`;
+
+    document.getElementById('table-body').appendChild(tr);
+}

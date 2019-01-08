@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class ParticipantService {
@@ -35,9 +32,9 @@ public class ParticipantService {
 
         if (wrappedLottery.isPresent()) {
             // check if limit is available
-            wrappedLottery.get().setLotteryCapacity(wrappedLottery.get().getParticipants().size() + 1);
+            wrappedLottery.get().setParticipantCount(wrappedLottery.get().getParticipants().size() + 1);
 
-            if (wrappedLottery.get().getLotteryCapacity() > (Integer.valueOf(wrappedLottery.get().getLimit()))) {
+            if (wrappedLottery.get().getParticipantCount() > (Integer.valueOf(wrappedLottery.get().getLimit()))) {
                 return new ParticipantFailResponse("Fail", "Lottery{" + wrappedLottery.get().getTitle() + "} : limit reached, " +
                         "please choose another one from available list");
             // check if status is in progress
@@ -99,5 +96,13 @@ public class ParticipantService {
     public List<Participant> getAll() {
         LOGGER.info("Getting participant list");
         return participantDAO.getAll();
+    }
+
+    public List<Participant> getWinnerList() {
+        return participantDAO.getWinnerList();
+    }
+
+    public List<Participant> getConcludedLotteryParticipants() {
+        return participantDAO.getConcludedLotteryParticipants();
     }
 }

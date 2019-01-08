@@ -7,10 +7,7 @@ import lv.helloit.lottery.participants.service.ParticipantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collection;
@@ -62,5 +59,15 @@ public class ParticipantController {
     @GetMapping(value = "/get-participant-list")
     public Collection<Participant> getAll() {
         return participantService.getAll();
+    }
+
+    @GetMapping(value = "/get-participant-winner-list")
+    public Collection<Participant> getWinnerList() {
+        return participantService.getWinnerList();
+    }
+
+    @GetMapping(value = "/get-concluded-participant-list")
+    public Collection<Participant> getConcludedLotteryParticipants() {
+        return participantService.getConcludedLotteryParticipants();
     }
 }

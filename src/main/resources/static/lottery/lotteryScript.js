@@ -27,6 +27,9 @@ function loadLotteries() {
     }).then(
         resp => resp.json()
     ).then(lotteries => {
+        if (lotteries.length === 0) {
+            appendNotFoundMessage();
+        }
         for (const lottery of lotteries) {
             addLottery(lottery);
         }
@@ -39,7 +42,7 @@ function addLottery(lottery) {
     tr.innerHTML = `
         <td>${lottery.id}</td>
         <td>${lottery.title}</td>
-        <td>${lottery.lotteryCapacity ? lottery.lotteryCapacity + " / " + lottery.limit : "0 / " + lottery.limit}</td>
+        <td>${lottery.participantCount ? lottery.participantCount + " / " + lottery.limit : "0 / " + lottery.limit}</td>
         <td>${lottery.lotteryStatus}</td>
         <td>${lottery.startDate}</td>
         <td>${lottery.endDate ? lottery.endDate : "-"}</td>
@@ -62,7 +65,7 @@ function stopLottery() {
     }).then((resp) => resp.json()
     ).then(response => {
         if (response.status === 'OK') {
-            window.location.href = "/lottery/lotteryList.html";
+            window.location.reload();
         } else {
             alert(response.reason);
         }
@@ -107,9 +110,48 @@ function chooseWinnerLottery() {
     }).then((resp) => resp.json()
     ).then(response => {
         if (response.status === 'OK') {
-            window.location.href = "/lottery/winnerList.html";
+            window.location.href = "/participant/winnerList.html";
         } else {
             alert(response.reason);
         }
     });
 }
+
+function loadConcludedLotteries() {
+    fetch('/stats', {
+        method: 'GET'
+    }).then(
+        resp => resp.json()
+    ).then(lotteries => {
+        for (const lottery of lotteries) {
+            addConcludedLottery(lottery);
+        }
+    });
+}
+
+function addConcludedLottery(lottery) {
+    const tr = document.createElement('tr');
+
+    tr.innerHTML = `
+        <td>${lottery.id}</td>
+        <td>${lottery.title}</td>
+        <td>${lottery.lotteryStatus}</td>
+        <td>${lottery.startDate}</td>
+        <td>${lottery.endDate}</td>
+        <td>${lottery.participantCount}</td>
+`;
+
+    document.getElementById('table-body').appendChild(tr);
+}
+
+function appendNotFoundMessage() {
+    const p = document.createElement('p');
+
+    p.innerHTML = `
+        No data matching criteria for this list found
+`;
+
+    document.getElementById('h2-body').appendChild(p);
+}
+
+// No data matching criteria for this list found

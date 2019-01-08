@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Choose Winner</title>
+    <title>Lottery Statistics</title>
     <style type="text/css">
         tbody { font-family: 'Montserrat', sans-serif; }
         tr { font-family: 'Merriweather', serif; }
@@ -19,28 +19,26 @@
 </head>
 <body>
 
-<h1 class="display-4 text-center my-4"><p>Choose Winner</p></h1>
+<h1 class="display-4 text-center my-4"><p>Lottery Statistics</p></h1>
 
 <hr>
 
 <div class="container">
-
     <a class="btn btn-primary float-right" href="/index.html" role="button">
         <i class="fas fa-home"></i> Homepage</a>
 
     <br><br>
 
-    <p><i>Here is the data of lotteries eligible for choosing the winner. Once winner is chosen, status will change to - FINISHED and data will be moved to <u>Stats</u> menu.</i></p>
-
+    <p><i>Data of concluded lotteries, status - FINISHED.</i></p>
     <table class="table table-bordered">
         <thead class="thead-light">
         <tr>
             <th scope="col">Id</th>
             <th scope="col">Title</th>
-            <th scope="col">Limit</th>
             <th scope="col">Status</th>
             <th scope="col">Start date</th>
             <th scope="col">End date</th>
+            <th scope="col">Participants</th>
         </tr>
         </thead>
         <tbody id="table-body">
@@ -48,34 +46,6 @@
         </tbody>
     </table>
 
-    <br>
-
-    <div class="form-group">
-        <label for="id">Id(*)</label>
-        <input class="form-control" type="text" id="id" placeholder="Enter lottery id">
-    </div>
-
-
-    <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#confirm"><i class="fas fa-check-circle"></i> Submit</button>
-
-    <div class="modal" id="confirm">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Warning!</h5>
-                    <button class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    Please confirm your choice.
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary center-block" type="submit" onclick="chooseWinnerLottery()">Confirm</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <br><br>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -89,7 +59,7 @@
         crossorigin="anonymous"></script>
 <script src="lotteryScript.js" type="text/javascript"></script>
 <script>
-    loadEndedLotteries();
+    loadConcludedLotteries();
 </script>
 
 </body>

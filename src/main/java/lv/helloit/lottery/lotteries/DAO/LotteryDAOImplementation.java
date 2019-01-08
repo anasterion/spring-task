@@ -44,7 +44,7 @@ public class LotteryDAOImplementation implements LotteryDAO {
     public List<Lottery> getAll() {
         Session session = sessionFactory.openSession();
 
-        Query<Lottery> query = session.createQuery("from Lottery l order by l.id", Lottery.class);
+        Query<Lottery> query = session.createQuery("from Lottery l where l.lotteryStatus like 'IN PROGRESS' order by l.id", Lottery.class);
         List<Lottery> lotteryList = query.getResultList();
 
         session.close();

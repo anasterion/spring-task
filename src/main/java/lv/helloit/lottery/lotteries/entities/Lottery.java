@@ -36,7 +36,7 @@ public class Lottery {
     private String lotteryStatus;
 
     @Column(name = "lottery_capacity")
-    private Integer lotteryCapacity;
+    private Integer participantCount;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "lottery")
     @JsonIgnore
@@ -99,12 +99,12 @@ public class Lottery {
         this.participants = participants;
     }
 
-    public Integer getLotteryCapacity() {
-        return lotteryCapacity;
+    public Integer getParticipantCount() {
+        return participantCount;
     }
 
-    public void setLotteryCapacity(Integer lotteryCapacity) {
-        this.lotteryCapacity = lotteryCapacity;
+    public void setParticipantCount(Integer lotteryCapacity) {
+        this.participantCount = lotteryCapacity;
     }
 
     @Override
@@ -118,13 +118,13 @@ public class Lottery {
                 Objects.equals(startDate, lottery.startDate) &&
                 Objects.equals(endDate, lottery.endDate) &&
                 Objects.equals(lotteryStatus, lottery.lotteryStatus) &&
-                Objects.equals(lotteryCapacity, lottery.lotteryCapacity) &&
+                Objects.equals(participantCount, lottery.participantCount) &&
                 Objects.equals(participants, lottery.participants);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, limit, startDate, endDate, lotteryStatus, lotteryCapacity, participants);
+        return Objects.hash(id, title, limit, startDate, endDate, lotteryStatus, participantCount, participants);
     }
 
     @Override
@@ -136,7 +136,7 @@ public class Lottery {
                 ", startDate='" + startDate + '\'' +
                 ", endDate='" + endDate + '\'' +
                 ", lotteryStatus='" + lotteryStatus + '\'' +
-                ", lotteryCapacity=" + lotteryCapacity +
+                ", lotteryCapacity=" + participantCount +
                 ", participants=" + participants +
                 '}';
     }
