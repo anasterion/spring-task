@@ -29,6 +29,9 @@ function loadParticipants() {
     }).then(
         resp => resp.json()
     ).then(participants => {
+        if (participants.length === 0) {
+            appendNotFoundMessage();
+        }
         for (const participant of participants) {
             addParticipant(participant);
         }
@@ -57,6 +60,9 @@ function loadWinnerParticipants() {
     }).then(
         resp => resp.json()
     ).then(participants => {
+        if (participants.length === 0) {
+            appendNotFoundMessage();
+        }
         for (const participant of participants) {
             addWithStatusParticipant(participant);
         }
@@ -84,6 +90,9 @@ function loadConcludedLotteryParticipants() {
     }).then(
         resp => resp.json()
     ).then(participants => {
+        if (participants.length === 0) {
+            appendNotFoundMessage();
+        }
         for (const participant of participants) {
             addConcludedParticipant(participant);
         }
@@ -105,4 +114,14 @@ function addConcludedParticipant (participant) {
 `;
 
     document.getElementById('table-body').appendChild(tr);
+}
+
+function appendNotFoundMessage() {
+    const p = document.createElement('p');
+
+    p.innerHTML = `
+        No data matching criteria for this list found
+`;
+
+    document.getElementById('h2-body').appendChild(p);
 }

@@ -78,6 +78,9 @@ function loadEndedLotteries() {
     }).then(
         resp => resp.json()
     ).then(lotteries => {
+        if (lotteries.length === 0) {
+            appendNotFoundMessage();
+        }
         for (const lottery of lotteries) {
             addLottery(lottery);
         }
@@ -90,6 +93,9 @@ function loadInProgressLotteries() {
     }).then(
         resp => resp.json()
     ).then(lotteries => {
+        if (lotteries.length === 0) {
+            appendNotFoundMessage();
+        }
         for (const lottery of lotteries) {
             addLottery(lottery);
         }
@@ -123,6 +129,9 @@ function loadConcludedLotteries() {
     }).then(
         resp => resp.json()
     ).then(lotteries => {
+        if (lotteries.length === 0) {
+            appendNotFoundMessage();
+        }
         for (const lottery of lotteries) {
             addConcludedLottery(lottery);
         }
@@ -154,4 +163,19 @@ function appendNotFoundMessage() {
     document.getElementById('h2-body').appendChild(p);
 }
 
-// No data matching criteria for this list found
+function checkStatus() {
+    const id = document.getElementById('id').value;
+    const email = document.getElementById('email').value;
+    const code = document.getElementById('code').value;
+
+    fetch('/status?id=' + id + '&email=' + email + '&code=' + code, {
+        method: 'GET'
+    }).then((resp) => resp.json()
+    ).then(response => {
+        if (response.status === 'ERROR') {
+            alert(response.reason);
+        } else {
+            alert(response.status);
+        }
+    });
+}

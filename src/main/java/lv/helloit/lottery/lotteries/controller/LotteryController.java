@@ -110,4 +110,21 @@ public class LotteryController {
     public Collection<Lottery> getStatistics() {
         return lotteryService.getStatistics();
     }
+
+    @GetMapping(value = "status", produces = MediaType.APPLICATION_JSON_VALUE)
+    public LotteryResponse getStatus(@RequestParam String id, @RequestParam String email, @RequestParam String code) {
+        id = id.trim();
+        email = email.trim();
+        code = code.trim();
+
+        if (id.equals("") || id.isEmpty()) {
+            return new LotteryFailResponse("ERROR", "Check if all fields are populated");
+        } else if (email.equals("") || email.isEmpty()) {
+            return new LotteryFailResponse("ERROR", "Check if all fields are populated");
+        } else if (code.equals("") || code.isEmpty()) {
+            return new LotteryFailResponse("ERROR", "Check if all fields are populated");
+        }
+
+        return lotteryService.getStatus(Long.valueOf(id), email, code);
+    }
 }

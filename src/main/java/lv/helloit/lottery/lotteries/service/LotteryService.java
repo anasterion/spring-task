@@ -88,7 +88,7 @@ public class LotteryService {
 
         if (wrappedLottery.isPresent()) {
 
-            if (wrappedLottery.get().getParticipantCount() == null) {
+            if (wrappedLottery.get().getParticipants().size() == 0) {
                 return new LotteryFailResponse("Fail", "No participants found for lottery with id - " + id);
             }
 
@@ -125,5 +125,28 @@ public class LotteryService {
 
     public List<Lottery> getStatistics() {
         return lotteryDAO.getWithStatus("FINISHED");
+    }
+
+    public LotteryResponse getStatus(Long id, String email, String code) {
+        Optional<Lottery> wrappedLottery = lotteryDAO.getById(id);
+
+        if (wrappedLottery.isPresent()) {
+
+            if (wrappedLottery.get().getParticipants().size() == 0) {
+                return new LotteryFailResponse("ERROR", "Can't find such participant. Check input data");
+            }
+
+            for (Participant p : wrappedLottery.get().getParticipants()) {
+
+                if (p.getCode().equals(code)) {
+                    if (p.getEmail().equals(email)) {
+                        return new LotterySuccessResponse(p.getStatus());
+                    }
+                }
+            }
+
+        }
+
+        return new LotteryFailResponse("ERROR", "Can't find such participant. Check input data");
     }
 }
