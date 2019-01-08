@@ -1,14 +1,12 @@
 package lv.helloit.lottery.participants.entities;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lv.helloit.lottery.lotteries.constraints.IsGreaterThanZero;
 import lv.helloit.lottery.lotteries.entities.Lottery;
 import lv.helloit.lottery.participants.constraints.AgeReq;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.util.Objects;
 
 @Entity
@@ -23,7 +21,7 @@ public class Participant {
     @Column(name = "lottery_id")
     private String lotteryId;
 
-    @Email(message = "should be valid email")
+    @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$", message = "should be a valid e-mail")
     @NotBlank(message = "can't be empty")
     @Column(name = "email")
     private String email;

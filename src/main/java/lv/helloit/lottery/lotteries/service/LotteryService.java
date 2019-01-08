@@ -88,6 +88,10 @@ public class LotteryService {
 
         if (wrappedLottery.isPresent()) {
 
+            if (wrappedLottery.get().getLotteryStatus().equals("IN PROGRESS")) {
+                return new LotteryFailResponse("Fail", "Lottery with id " + id + " is still ongoing");
+            }
+
             if (wrappedLottery.get().getParticipants().size() == 0) {
                 return new LotteryFailResponse("Fail", "No participants found for lottery with id - " + id);
             }
