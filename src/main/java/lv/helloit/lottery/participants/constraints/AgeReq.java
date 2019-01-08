@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AgeReq {
 
-    String message() default "value can't be empty and person must be older than 21 to participate";
+    String message() default "value can't be empty and person age must be between 21-65 to participate";
 
     Class<?>[] groups() default { };
 

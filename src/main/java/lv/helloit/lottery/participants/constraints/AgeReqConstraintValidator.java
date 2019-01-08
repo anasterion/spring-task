@@ -11,7 +11,7 @@ public class AgeReqConstraintValidator implements ConstraintValidator<AgeReq, St
         try {
             int tmpInt = Integer.parseInt(value);
 
-            if (tmpInt > 20) {
+            if (tmpInt > 20 && tmpInt < 66) {
                 return true;
             }
         } catch (NumberFormatException e) {

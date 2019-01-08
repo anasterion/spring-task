@@ -125,6 +125,14 @@ public class LotteryController {
             return new LotteryFailResponse("ERROR", "Check if all fields are populated");
         }
 
-        return lotteryService.getStatus(Long.valueOf(id), email, code);
+        Long longId;
+
+        try {
+            longId = Long.valueOf(id);
+        } catch (NumberFormatException e) {
+            return new LotteryFailResponse("ERROR", "Check if id is correct");
+        }
+
+        return lotteryService.getStatus(longId, email, code);
     }
 }
