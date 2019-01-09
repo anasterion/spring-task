@@ -99,4 +99,16 @@ public class LotteryDAOImplementation implements LotteryDAO {
         tx.commit();
         session.close();
     }
+
+    @SuppressWarnings("Duplicates")
+    @Override
+    public List<Lottery> getInProgressForParticipant() {
+        Session session = sessionFactory.openSession();
+
+        Query<Lottery> query = session.createQuery("from Lottery l where l.lotteryStatus like 'IN PROGRESS' and l.participantCount not like l.limit order by l.id", Lottery.class);
+        List<Lottery> lotteryList = query.getResultList();
+
+        session.close();
+        return lotteryList;
+    }
 }

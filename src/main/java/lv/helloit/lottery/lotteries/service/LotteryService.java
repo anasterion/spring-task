@@ -34,6 +34,10 @@ public class LotteryService {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("DD.MM.YY HH:mm");
         String strDate = simpleDateFormat.format(date);
 
+        // to fix that input 02 is in java understanding 2, so it should save 2, 3 in DB. Not - 02, 0003 etc
+        int tmpInt = Integer.valueOf(lottery.getLimit());
+        lottery.setLimit(String.valueOf(tmpInt));
+
         lottery.setStartDate(strDate);
         lottery.setLotteryStatus("IN PROGRESS");
 
@@ -152,5 +156,9 @@ public class LotteryService {
         }
 
         return new LotteryFailResponse("ERROR", "Can't find such participant. Check input data");
+    }
+
+    public List<Lottery> getInProgressForParticipant() {
+        return lotteryDAO.getInProgressForParticipant();
     }
 }

@@ -88,7 +88,7 @@ function loadEndedLotteries() {
 }
 
 function loadInProgressLotteries() {
-    fetch('/get-lottery-list/IN%20PROGRESS', {
+    fetch('/get-lottery-list-for-participant', {
         method: 'GET'
     }).then(
         resp => resp.json()

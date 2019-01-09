@@ -3,7 +3,7 @@ function createParticipant() {
     const age = document.getElementById('age').value;
     const lottery_id = document.getElementById('lottery_id').value;
 
-    fetch('/registration', {
+    fetch('/register', {
         method: 'POST',
         body: JSON.stringify({
             email: email,

@@ -18,4 +18,6 @@ public interface LotteryDAO {
     void update(Lottery lottery);
 
     List<Lottery> getWithStatus(String status);
+
+    List<Lottery> getInProgressForParticipant();
 }

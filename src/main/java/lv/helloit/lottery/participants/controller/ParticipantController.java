@@ -21,7 +21,7 @@ public class ParticipantController {
         this.participantService = participantService;
     }
 
-    @PostMapping(value = "/registration", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
     public ParticipantResponse registerInLottery(@Valid @RequestBody Participant participant, BindingResult bindingResult) {
         String emailErrorMessage = "";
         String ageErrorMessage = "";

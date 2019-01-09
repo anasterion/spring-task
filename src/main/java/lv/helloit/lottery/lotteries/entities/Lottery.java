@@ -36,7 +36,7 @@ public class Lottery {
     private String lotteryStatus;
 
     @Column(name = "lottery_capacity")
-    private Integer participantCount;
+    private String participantCount;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "lottery")
     @JsonIgnore
@@ -99,11 +99,11 @@ public class Lottery {
         this.participants = participants;
     }
 
-    public Integer getParticipantCount() {
+    public String getParticipantCount() {
         return participantCount;
     }
 
-    public void setParticipantCount(Integer lotteryCapacity) {
+    public void setParticipantCount(String lotteryCapacity) {
         this.participantCount = lotteryCapacity;
     }
 

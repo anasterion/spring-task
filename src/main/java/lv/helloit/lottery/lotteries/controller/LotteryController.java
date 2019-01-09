@@ -135,4 +135,9 @@ public class LotteryController {
 
         return lotteryService.getStatus(longId, email, code);
     }
+
+    @GetMapping(value = "/get-lottery-list-for-participant")
+    public Collection<Lottery> getInProgressForParticipant() {
+        return lotteryService.getInProgressForParticipant();
+    }
 }

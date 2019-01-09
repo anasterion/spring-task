@@ -32,9 +32,9 @@ public class ParticipantService {
 
         if (wrappedLottery.isPresent()) {
             // check if limit is available
-            wrappedLottery.get().setParticipantCount(wrappedLottery.get().getParticipants().size() + 1);
+            wrappedLottery.get().setParticipantCount(String.valueOf(wrappedLottery.get().getParticipants().size() + 1));
 
-            if (wrappedLottery.get().getParticipantCount() > (Integer.valueOf(wrappedLottery.get().getLimit()))) {
+            if (Integer.valueOf(wrappedLottery.get().getParticipantCount()) > (Integer.valueOf(wrappedLottery.get().getLimit()))) {
                 return new ParticipantFailResponse("Fail", "Lottery{" + wrappedLottery.get().getTitle() + "} : limit reached, " +
                         "please choose another one from available list");
             // check if status is in progress
@@ -60,7 +60,7 @@ public class ParticipantService {
     }
 
     public String generateCode(String email) {
-        String stringDate = "";
+        String stringDate;
 
         while (true) {
             Date date = new Date();
@@ -75,13 +75,10 @@ public class ParticipantService {
             }
 
             Random rand = new Random();
-            String tmpString = "";
 
             for (int i = 0; i < 8; i++) {
-                tmpString = tmpString + rand.nextInt(10);
+                stringDate = stringDate + rand.nextInt(10);
             }
-
-            stringDate = stringDate + tmpString;
 
             // checking generated code uniqueness
             if (!participantDAO.checkIfDuplicate(stringDate, "code")) {
