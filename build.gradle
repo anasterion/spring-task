@@ -30,6 +30,8 @@ dependencies {
 	compile ('org.apache.logging.log4j:log4j-core:2.11.1')
 	compile ('org.hibernate:hibernate-core:5.4.0.Final')
 	compile ('org.postgresql:postgresql:9.4.1212')
-//	compile ('org.springframework.boot:spring-boot-starter-security')
-
+	compile ('org.springframework.boot:spring-boot-starter-security')
+	compile('org.apache.tomcat.embed:tomcat-embed-jasper:9.0.14')
+	compile('javax.servlet:javax.servlet-api:4.0.1')
+	compile('javax.servlet:jstl:1.2')
 }
