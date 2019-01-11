@@ -1,4 +1,5 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -22,12 +23,6 @@
 <hr>
 
 <div class="container">
-    <div class="row justify-content-center">
-        <a class="btn btn-success" href="/" role="button">
-            <i class="fas fa-home"></i> Home page</a>
-    </div>
-
-    <br>
 
     <div class="row justify-content-center">
         <div class="col-md-5">
@@ -49,7 +44,25 @@
                     <a href="/lottery/lotteryStats.html" class="btn btn-outline-light btn-sm" data-toggle="tooltip"
                        data-placement="bottom" title="View concluded lottery list">Statistics</a>
 
-                    <br><br>
+                    <br><br><br>
+
+                    <sec:authorize access="isAuthenticated()">
+                        <form:form action="/logout" method="POST">
+
+                            <div class="row justify-content-center">
+                                <button type="submit" class="btn btn-secondary btn-block"><i
+                                        class="fas fa-sign-out-alt"></i>
+                                    Sign Out
+                                </button>
+                            </div>
+                            <br>
+                        </form:form>
+                    </sec:authorize>
+
+                    <div class="row justify-content-center">
+                        <a class="btn btn-success btn-block" href="/" role="button">
+                            <i class="fas fa-home"></i> Home page</a>
+                    </div>
 
             </div>
         </div>

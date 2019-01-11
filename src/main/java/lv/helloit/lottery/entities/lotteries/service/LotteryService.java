@@ -78,7 +78,7 @@ public class LotteryService {
             lotteryDAO.update(wrappedLottery.get());
 
             LOGGER.info("Successfully stopped lottery " + wrappedLottery.get().getTitle() + " registration");
-            return new LotterySuccessResponse("OK");
+            return new LotteryResponse("OK");
         }
 
         LOGGER.error("Failed to stop lottery registration with id " + lotteryId);
@@ -146,7 +146,7 @@ public class LotteryService {
 
                 if (p.getCode().equals(code)) {
                     if (p.getEmail().equals(email)) {
-                        return new LotterySuccessResponse(p.getStatus());
+                        return new LotteryResponse(p.getStatus());
                     }
                 }
             }

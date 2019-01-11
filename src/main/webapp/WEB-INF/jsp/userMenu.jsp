@@ -1,4 +1,5 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -7,8 +8,13 @@
     <title>User Menu</title>
     <link href="https://fonts.googleapis.com/css?family=Merriweather|Montserrat" rel="stylesheet">
     <style type="text/css">
-        h1 { font-family: 'Montserrat', sans-serif; }
-        p { font-family: 'Merriweather', serif; }
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        p {
+            font-family: 'Merriweather', serif;
+        }
     </style>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
           integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
@@ -22,12 +28,6 @@
 <hr>
 
 <div class="container">
-    <div class="row justify-content-center">
-        <a class="btn btn-success" href="/" role="button">
-            <i class="fas fa-home"></i> Home page</a>
-    </div>
-
-    <br>
 
     <div class="row justify-content-center">
 
@@ -39,18 +39,39 @@
                     <h4 class="display-4">
                         <i class="fas fa-users"></i> <h4>Commands:</h4>
                     </h4>
-                    <a href="/participant/createParticipant.html" class="btn btn-outline-light btn-sm" data-toggle="tooltip"
+                    <a href="/participant/createParticipant.html" class="btn btn-outline-light btn-sm"
+                       data-toggle="tooltip"
                        data-placement="bottom" title="Participate in pending lottery">Register</a>
-                    <a href="/participant/participantList.html" class="btn btn-outline-light btn-sm" data-toggle="tooltip"
+                    <a href="/participant/participantList.html" class="btn btn-outline-light btn-sm"
+                       data-toggle="tooltip"
                        data-placement="bottom" title="Get pending participant list">List</a>
                     <a href="/participant/winnerList.html" class="btn btn-outline-light btn-sm" data-toggle="tooltip"
                        data-placement="bottom" title="Get winner list">Winners</a>
                     <a href="/participant/getStatus.html" class="btn btn-outline-light btn-sm" data-toggle="tooltip"
                        data-placement="bottom" title="Get result about particular entry">Request result</a>
-                    <a href="/participant/participantStats.html" class="btn btn-outline-light btn-sm" data-toggle="tooltip"
+                    <a href="/participant/participantStats.html" class="btn btn-outline-light btn-sm"
+                       data-toggle="tooltip"
                        data-placement="bottom" title="Get finished lottery participant list">Statistics</a>
 
-                    <br><br>
+                    <br><br><br>
+
+                    <sec:authorize access="isAuthenticated()">
+                        <form:form action="/logout" method="POST">
+
+                            <div class="row justify-content-center">
+                                <button type="submit" class="btn btn-secondary btn-block"><i
+                                        class="fas fa-sign-out-alt"></i>
+                                    Sign Out
+                                </button>
+                            </div>
+                            <br>
+                        </form:form>
+                    </sec:authorize>
+
+                    <div class="row justify-content-center">
+                        <a class="btn btn-success btn-block" href="/" role="button">
+                            <i class="fas fa-home"></i> Home page</a>
+                    </div>
 
                 </div>
             </div>
