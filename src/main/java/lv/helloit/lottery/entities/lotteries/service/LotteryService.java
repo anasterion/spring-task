@@ -25,8 +25,6 @@ public class LotteryService {
     }
 
     public LotteryResponse startRegistration(Lottery lottery) {
-        LOGGER.info("Starting to create new lottery");
-
         Date date = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("DD.MM.YY HH:mm");
         String strDate = simpleDateFormat.format(date);
@@ -40,14 +38,13 @@ public class LotteryService {
         lottery.setParticipantCount("0");
 
         LotteryResponse response = lotteryDAO.startRegistration(lottery);
-        LOGGER.info("Created lottery -> " + lottery);
+        LOGGER.info("Successfully created lottery -> " + lottery);
 
         return response;
     }
 
     public List<Lottery> getAll() {
-        LOGGER.info("Getting lottery list");
-
+        LOGGER.info("Retrieving lottery list with status - IN PROGRESS");
         return lotteryDAO.getAll();
     }
 
@@ -60,32 +57,29 @@ public class LotteryService {
 
         if (wrappedLottery.isPresent()) {
             if (!wrappedLottery.get().getLotteryStatus().equals("IN PROGRESS")) {
-                LOGGER.error("Failed to stop lottery registration with id " + lotteryId);
+                LOGGER.error("Failed to stop lottery registration with id " + lotteryId + ", reason: lottery already ended");
                 return new LotteryFailResponse("Fail", "Lottery with id " + lotteryId + " already ended");
             }
 
             if (wrappedLottery.get().getParticipants().size() == 0) {
+                LOGGER.error("Failed to stop lottery registration with id " + lotteryId + ", reason: no participants found");
                 return new LotteryFailResponse("Fail", "No participants found for lottery with id - " + lotteryId);
             }
 
-            Date date = new Date();
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("DD.MM.YY HH:mm");
-            String strDate = simpleDateFormat.format(date);
-
-            wrappedLottery.get().setEndDate(strDate);
-
             wrappedLottery.get().setLotteryStatus("ENDED");
             lotteryDAO.update(wrappedLottery.get());
+            LOGGER.info("Lottery id: " + lotteryId + "status updated to - ENDED");
 
-            LOGGER.info("Successfully stopped lottery " + wrappedLottery.get().getTitle() + " registration");
+            LOGGER.info("Successfully stopped lottery: " + wrappedLottery.get().getTitle() + " - registration");
             return new LotteryResponse("OK");
         }
 
-        LOGGER.error("Failed to stop lottery registration with id " + lotteryId);
+        LOGGER.error("Failed to stop lottery registration with id " + lotteryId + ", reason: lottery doesn't exist");
         return new LotteryFailResponse("Fail", "Lottery with id - " + lotteryId + ", doesn't exist");
     }
 
     public List<Lottery> getWithStatus(String status) {
+        LOGGER.info("Retrieving lottery list with status - " + status);
         return lotteryDAO.getWithStatus(status);
     }
 
@@ -95,20 +89,32 @@ public class LotteryService {
         if (wrappedLottery.isPresent()) {
 
             if (wrappedLottery.get().getLotteryStatus().equals("IN PROGRESS")) {
+                LOGGER.error("Failed to select winner for lottery id: " + id + ", reason: lottery is still ongoing");
                 return new LotteryFailResponse("Fail", "Lottery with id " + id + " is still ongoing");
             }
 
             // check so winner can't be chosen multiple times
             if (!wrappedLottery.get().getParticipants().get(0).getStatus().equals("PENDING")) {
+                LOGGER.error("Failed to select winner for lottery id: " + id + ", reason: lottery already has winner");
                 return new LotteryFailResponse("Fail", "Lottery with id - " + id + " already has winner");
             }
 
+            Date date = new Date();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("DD.MM.YY HH:mm");
+            String strDate = simpleDateFormat.format(date);
+
+            wrappedLottery.get().setEndDate(strDate);
+
             wrappedLottery.get().setLotteryStatus("FINISHED");
             lotteryDAO.update(wrappedLottery.get());
+            LOGGER.info("Starting to choose lottery id: " + id + " winner");
+            LOGGER.info("Lottery status changed to - FINISHED, end date has been set to " + strDate);
+            LOGGER.info("Setting participant status to - LOOSE, before choosing the winner");
 
             for (Participant p : wrappedLottery.get().getParticipants()) {
                 p.setStatus("LOOSE");
                 participantDAO.update(p);
+                LOGGER.info(p + " status has been changed to - LOOSE");
             }
 
             // applying equal chance winning logic
@@ -118,18 +124,22 @@ public class LotteryService {
 
             Random rand = new Random();
             int winnerNumber = rand.nextInt((wrappedLottery.get().getParticipants().size() - 1) + 1);
-            LOGGER.info("Winner collection index number and code are - " + (winnerNumber + 1) + " : " + wrappedLottery.get().getParticipants().get(winnerNumber).getCode());
+            LOGGER.info("Winner collection index number and code are - " + winnerNumber + " : " + wrappedLottery.get().getParticipants().get(winnerNumber).getCode());
 
             wrappedLottery.get().getParticipants().get(winnerNumber).setStatus("WIN");
             participantDAO.update(wrappedLottery.get().getParticipants().get(winnerNumber));
+            LOGGER.info("Setting winner " + wrappedLottery.get().getParticipants().get(winnerNumber) + " status to - WIN");
 
+            LOGGER.info("Successfully concluded lottery with id: " + id);
             return new LotteryWinnerSuccessResponse("OK", wrappedLottery.get().getParticipants().get(winnerNumber).getCode());
         }
 
+        LOGGER.error("Failed to select winner for lottery id: " + id + ", reason: lottery doesn't exist");
         return new LotteryFailResponse("Fail", "Check available lotteries from list and try again");
     }
 
     public List<Lottery> getStatistics() {
+        LOGGER.info("Retrieving lottery list with status - FINISHED");
         return lotteryDAO.getWithStatus("FINISHED");
     }
 
@@ -137,8 +147,10 @@ public class LotteryService {
         Optional<Lottery> wrappedLottery = lotteryDAO.getById(id);
 
         if (wrappedLottery.isPresent()) {
+        LOGGER.info("Retrieving info about participant status");
 
             if (wrappedLottery.get().getParticipants().size() == 0) {
+                LOGGER.error("Failed to retrieve info about participant email: " + email + ", code: " + code);
                 return new LotteryFailResponse("ERROR", "Can't find such participant. Check input data");
             }
 
@@ -146,6 +158,7 @@ public class LotteryService {
 
                 if (p.getCode().equals(code)) {
                     if (p.getEmail().equals(email)) {
+                        LOGGER.info("Successfully retrieved info about participant email: " + email + ", code: " + code + ". Status - " + p.getStatus());
                         return new LotteryResponse(p.getStatus());
                     }
                 }
@@ -153,10 +166,12 @@ public class LotteryService {
 
         }
 
+        LOGGER.error("Failed to retrieve info about participant email: " + email + ", code: " + code);
         return new LotteryFailResponse("ERROR", "Can't find such participant. Check input data");
     }
 
     public List<Lottery> getInProgressForParticipant() {
+        LOGGER.info("Retrieving lottery list with status - IN PROGRESS");
         return lotteryDAO.getInProgressForParticipant();
     }
 }

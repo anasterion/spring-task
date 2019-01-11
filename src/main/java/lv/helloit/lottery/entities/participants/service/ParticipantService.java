@@ -30,20 +30,27 @@ public class ParticipantService {
     public ParticipantResponse assignLottery(Participant participant) {
         Optional<Lottery> wrappedLottery = lotteryDAO.getById(Long.valueOf(participant.getLotteryId()));
 
+        LOGGER.info("Checking if lottery with provided id exists");
         if (wrappedLottery.isPresent()) {
+
+            LOGGER.info("Checking if lottery id: " + wrappedLottery.get().getId() + " is open for registration");
             // check if limit is available
             wrappedLottery.get().setParticipantCount(String.valueOf(wrappedLottery.get().getParticipants().size() + 1));
 
             // check if status is in progress
             if (!wrappedLottery.get().getLotteryStatus().equals("IN PROGRESS")) {
+                LOGGER.error("Failed to register participant, reason: lottery with id " + wrappedLottery.get().getId() + " is concluded");
                 return new ParticipantFailResponse("Fail", "Lottery: " + wrappedLottery.get().getTitle() + " is concluded, " +
                         "please choose another one with status - In progress");
             }
 
             if (Integer.valueOf(wrappedLottery.get().getParticipantCount()) > (Integer.valueOf(wrappedLottery.get().getLimit()))) {
+                LOGGER.error("Failed to register participant, reason: lottery with id " + wrappedLottery.get().getId() + " limit reached");
                 return new ParticipantFailResponse("Fail", "Lottery{" + wrappedLottery.get().getTitle() + "} : limit reached, " +
                         "please choose another one from available list");
             }
+
+            LOGGER.info("Successfully assigned participant to lottery id: " + wrappedLottery.get().getId());
 
             // start participant registration
             LOGGER.info("Starting to register new participant");
@@ -58,11 +65,13 @@ public class ParticipantService {
             return new ParticipantSuccessResponse("OK");
         }
 
+        LOGGER.error("Failed to register participant, reason: lottery with id " + participant.getLotteryId() + " doesn't exist");
         return new ParticipantFailResponse("Fail", "Lottery with id - " + participant.getLotteryId() + ", doesn't exist");
     }
 
     public String generateCode(String email) {
         String stringDate;
+        LOGGER.info("Generating unique lottery code for participant");
 
         while (true) {
             Date date = new Date();
@@ -89,19 +98,22 @@ public class ParticipantService {
             break;
         }
 
+        LOGGER.info("Generated unique code for participant - " + stringDate);
         return stringDate;
     }
 
     public List<Participant> getAll() {
-        LOGGER.info("Getting participant list");
+        LOGGER.info("Retrieving participant list, status - PENDING");
         return participantDAO.getAll();
     }
 
     public List<Participant> getWinnerList() {
+        LOGGER.info("Retrieving participant list, status - WIN");
         return participantDAO.getWinnerList();
     }
 
     public List<Participant> getConcludedLotteryParticipants() {
+        LOGGER.info("Retrieving participant list, status - WIN OR LOOSE (concluded lotteries)");
         return participantDAO.getConcludedLotteryParticipants();
     }
 }

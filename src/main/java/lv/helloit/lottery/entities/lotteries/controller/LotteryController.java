@@ -5,6 +5,8 @@ import lv.helloit.lottery.entities.lotteries.entities.Lottery;
 import lv.helloit.lottery.entities.lotteries.entities.LotteryFailResponse;
 import lv.helloit.lottery.entities.lotteries.entities.LotteryResponse;
 import lv.helloit.lottery.entities.lotteries.service.LotteryService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
@@ -16,6 +18,7 @@ import java.util.Collection;
 @RestController
 public class LotteryController {
     private final LotteryService lotteryService;
+    private final static Logger LOGGER = LoggerFactory.getLogger(LotteryController.class);
 
     @Autowired
     public LotteryController(LotteryService lotteryService) {
@@ -47,11 +50,13 @@ public class LotteryController {
             }
 
             String errorMessage = titleErrorMessage + limitErrorMessage;
+            LOGGER.error("Failed to create new lottery, reason -> " + errorMessage);
             return new LotteryFailResponse("Fail", errorMessage);
         }
 
         if (!lotteryService.checkIfDuplicate(lottery.getTitle(), "title")) {
             String errorMessage = "title : value should be unique\n" + limitErrorMessage;
+            LOGGER.error("Failed to create new lottery, reason -> " + errorMessage);
             return new LotteryFailResponse("Fail", errorMessage);
         }
 
@@ -81,6 +86,7 @@ public class LotteryController {
                         bindingResult.getFieldError("id").getDefaultMessage() + "\n";
             }
 
+            LOGGER.error("Failed to stop lottery, reason -> " + idErrorMessage);
             return new LotteryFailResponse("Fail", idErrorMessage);
         }
 
@@ -100,6 +106,7 @@ public class LotteryController {
                         bindingResult.getFieldError("id").getDefaultMessage() + "\n";
             }
 
+            LOGGER.error("Failed to to choose lottery winner, reason -> " + idErrorMessage);
             return new LotteryFailResponse("Fail", idErrorMessage);
         }
 
@@ -118,10 +125,13 @@ public class LotteryController {
         code = code.trim();
 
         if (id.equals("") || id.isEmpty()) {
+            LOGGER.error("Failed to to retrieve participant status, reason -> Check if all fields are populated");
             return new LotteryFailResponse("ERROR", "Check if all fields are populated");
         } else if (email.equals("") || email.isEmpty()) {
+            LOGGER.error("Failed to to retrieve participant status, reason -> Check if all fields are populated");
             return new LotteryFailResponse("ERROR", "Check if all fields are populated");
         } else if (code.equals("") || code.isEmpty()) {
+            LOGGER.error("Failed to to retrieve participant status, reason -> Check if all fields are populated");
             return new LotteryFailResponse("ERROR", "Check if all fields are populated");
         }
 
@@ -130,6 +140,7 @@ public class LotteryController {
         try {
             longId = Long.valueOf(id);
         } catch (NumberFormatException e) {
+            LOGGER.error("Failed to to retrieve participant status, reason -> Check if id is correct");
             return new LotteryFailResponse("ERROR", "Check if id is correct");
         }
 
