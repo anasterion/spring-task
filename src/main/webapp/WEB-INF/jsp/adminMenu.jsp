@@ -1,8 +1,10 @@
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>User Menu</title>
+    <title>Admin Menu</title>
     <link href="https://fonts.googleapis.com/css?family=Merriweather|Montserrat" rel="stylesheet">
     <style type="text/css">
         h1 { font-family: 'Montserrat', sans-serif; }
@@ -15,37 +17,44 @@
           crossorigin="anonymous">
 </head>
 <body>
-<h1 class="display-4 text-center my-4"><p>User Menu</p></h1>
+<h1 class="display-4 text-center my-4"><p>Admin Menu</p></h1>
 
 <hr>
 
 <div class="container">
     <div class="row justify-content-center">
+        <a class="btn btn-success" href="/" role="button">
+            <i class="fas fa-home"></i> Home page</a>
+    </div>
 
+    <br>
+
+    <div class="row justify-content-center">
         <div class="col-md-5">
-            <div class="card text-center bg-danger text-white 3">
+            <div class="card text-center bg-primary text-white 3">
                 <div class="card-body">
                     <br>
-                    <h3>Participant menu</h3>
+                    <h3>Lottery menu</h3>
                     <h4 class="display-4">
-                        <i class="fas fa-users"></i> <h4>Commands:</h4>
+                        <i class="fas fa-dice"></i> <h4>Commands:</h4>
                     </h4>
-                    <a href="/participant/createParticipant.html" class="btn btn-outline-light btn-sm" data-toggle="tooltip"
-                       data-placement="bottom" title="Participate in pending lottery">Register</a>
-                    <a href="/participant/participantList.html" class="btn btn-outline-light btn-sm" data-toggle="tooltip"
-                       data-placement="bottom" title="Get pending participant list">List</a>
-                    <a href="/participant/winnerList.html" class="btn btn-outline-light btn-sm" data-toggle="tooltip"
-                       data-placement="bottom" title="Get winner list">Winners</a>
-                    <a href="/participant/getStatus.html" class="btn btn-outline-light btn-sm" data-toggle="tooltip"
-                       data-placement="bottom" title="Get result about particular entry">Request result</a>
-                    <a href="/participant/participantStats.html" class="btn btn-outline-light btn-sm" data-toggle="tooltip"
-                       data-placement="bottom" title="Get finished lottery participant list">Statistics</a>
+                    <a href="/lottery/createLottery.html" class="btn btn-outline-light btn-sm" data-toggle="tooltip"
+                       data-placement="bottom" title="Register new lottery">Start</a>
+                    <a href="/lottery/stopLottery.html" class="btn btn-outline-light btn-sm" data-toggle="tooltip"
+                       data-placement="bottom" title="Stop pending lottery">Stop</a>
+                    <a href="/lottery/chooseLotteryWinner.html" class="btn btn-outline-light btn-sm" data-toggle="tooltip"
+                       data-placement="bottom" title="Conclude lottery">Choose winner</a>
+                    <a href="/lottery/lotteryList.html" class="btn btn-outline-light btn-sm" data-toggle="tooltip"
+                       data-placement="bottom" title="View pending lottery list">List</a>
+                    <a href="/lottery/lotteryStats.html" class="btn btn-outline-light btn-sm" data-toggle="tooltip"
+                       data-placement="bottom" title="View concluded lottery list">Statistics</a>
+
                     <br><br>
-                </div>
+
             </div>
         </div>
+
     </div>
-</div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>

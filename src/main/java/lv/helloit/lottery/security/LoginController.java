@@ -10,4 +10,19 @@ public class LoginController {
     public String showLoginPage() {
         return "login";
     }
+
+    @GetMapping(value = "/show-admin-page")
+    public String showAdminPage() {
+        return "adminMenu";
+    }
+
+    @GetMapping(value = "/show-user-page")
+    public String shoUserPage() {
+        return "userMenu";
+    }
+
+    @GetMapping(value = "/")
+    public String showIndexPage() {
+        return "index";
+    }
 }

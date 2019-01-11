@@ -1,9 +1,7 @@
 package lv.helloit.lottery.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,16 +26,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/adminMenu.html").hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST, "/start-registration").hasRole("ADMIN")
-                .antMatchers("/tasks**").authenticated()
+        http.httpBasic()
                 .and()
-                .formLogin()
-                .loginPage("/show-login-page")
-                .loginProcessingUrl("/authenticateTheUser")
-                .permitAll();
+                    .csrf().disable()
+                    .authorizeRequests()
+                    .antMatchers("chooseLotteryWinner.html", "createLottery.html",
+                        "stopLottery.html", "lotteryStats.html", "lotteryList.html").hasRole("ADMIN")
+                    .antMatchers(HttpMethod.POST, "/start-registration", "/stop-registration",
+                        "/choose-winner").hasRole("ADMIN")
+                .   antMatchers(HttpMethod.GET, "/stats", "/show-admin-page").hasRole("ADMIN")
+                .and()
+                    .formLogin()
+                    .loginPage("/show-login-page")
+                    .loginProcessingUrl("/authenticateTheUser")
+                    .permitAll()
+                .and()
+                    .logout()
+                    .logoutSuccessUrl("/")
+                    .permitAll();
     }
 }

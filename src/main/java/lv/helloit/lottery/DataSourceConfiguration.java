@@ -24,14 +24,4 @@ public class DataSourceConfiguration {
                 .configure()
                 .buildSessionFactory();
     }
-
-    @Bean
-    public Validator validator(final AutowireCapableBeanFactory autowireCapableBeanFactory) {
-
-        ValidatorFactory validatorFactory = Validation.byProvider(HibernateValidator.class)
-                .configure().constraintValidatorFactory(new SpringConstraintValidatorFactory(autowireCapableBeanFactory))
-                .buildValidatorFactory();
-
-        return validatorFactory.getValidator();
-    }
 }

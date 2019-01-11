@@ -1,3 +1,6 @@
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,11 +20,33 @@
 <body>
 <h1 class="display-4 text-center my-4"><p>Lottery Application</p></h1>
 
+
+
 <hr>
 
 <div class="container">
+
+    <sec:authorize access="!isAuthenticated()">
+    <div class="row justify-content-center">
+    <a class="btn btn-success" href="/show-login-page" role="button">
+        <i class="fas fa-key"></i> Sign In</a>
+    </div>
+    </sec:authorize>
+
+    <sec:authorize access="isAuthenticated()">
+        <form:form action="/logout" method="POST">
+        <div class="row justify-content-center">
+            <button type="submit" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
+
+        </div>
+        </form:form>
+    </sec:authorize>
+
+    <br>
+
     <div class="row justify-content-center">
         <div class="col-md-3">
+
             <div class="card text-center bg-primary text-white 3">
                 <div class="card-body">
                     <br>
@@ -30,9 +55,14 @@
                         <i class="fas fa-user-shield"></i>
                     </h4>
                     <h6><p>has access to admin and user menu</p></h6>
-                    <a href="/adminMenu.html" class="btn btn-outline-light btn-md">Select</a>
+                    <sec:authorize access="isAuthenticated()">
+                    <a href="/show-admin-page" class="btn btn-outline-light btn-md">Select</a>
+                    </sec:authorize>
 
-                    <br><br>
+                    <sec:authorize access="!isAuthenticated()">
+                        <a href="/show-admin-page" class="btn btn-outline-light btn-md disabled" aria-disabled="true">Select</a>
+                    </sec:authorize>
+
                 </div>
             </div>
         </div>
@@ -45,26 +75,22 @@
                     <h4 class="display-4">
                         <i class="fas fa-user"></i>
                     </h4>
-                    <h6><p>has access only to user menu</p></h6>
-                    <a href="/userMenu.html" class="btn btn-outline-light btn-md">Select</a>
-
-                    <br><br>
+                    <h6><p>has access to user menu only</p></h6>
+                    <a href="/show-user-page" class="btn btn-outline-light btn-md text-center">Select</a>
                 </div>
             </div>
+
         </div>
     </div>
     <br>
 
     <div class="row justify-content-center">
-        <p><i>Note: Upon selecting admin menu you will be prompted to login.</i></p><br>
+        <p class="text-danger"><i>Note:&nbsp</i></p>
+        <p><i> You need to login in order to use admin menu.</i></p><br>
     </div>
 
     <div class="row justify-content-center">
-        <p>Username: admin</p><br>
-    </div>
-
-    <div class="row justify-content-center">
-        <p>Password: admin</p><br>
+        <p>Username: admin | Password: admin</p><br>
     </div>
 
 </div>

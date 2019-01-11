@@ -30,6 +30,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-3">
+
             <form:form action="/authenticateTheUser"
                        method="POST" class="form-horizontal">
 

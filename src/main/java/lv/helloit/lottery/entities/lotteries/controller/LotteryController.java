@@ -63,7 +63,7 @@ public class LotteryController {
         return lotteryService.getAll();
     }
 
-    @GetMapping(value = "get-lottery-list/{status}")
+    @GetMapping(value = "/get-lottery-list/{status}")
     public Collection<Lottery> getWithStatus(@PathVariable String status) {
         return lotteryService.getWithStatus(status);
     }
@@ -106,12 +106,12 @@ public class LotteryController {
         return lotteryService.chooseWinner(Long.valueOf(id.getId()));
     }
 
-    @GetMapping(value = "stats", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/stats", produces = MediaType.APPLICATION_JSON_VALUE)
     public Collection<Lottery> getStatistics() {
         return lotteryService.getStatistics();
     }
 
-    @GetMapping(value = "status", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/status", produces = MediaType.APPLICATION_JSON_VALUE)
     public LotteryResponse getStatus(@RequestParam String id, @RequestParam String email, @RequestParam String code) {
         id = id.trim();
         email = email.trim();

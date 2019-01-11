@@ -103,8 +103,8 @@ public class Lottery {
         return participantCount;
     }
 
-    public void setParticipantCount(String lotteryCapacity) {
-        this.participantCount = lotteryCapacity;
+    public void setParticipantCount(String participantCount) {
+        this.participantCount = participantCount;
     }
 
     @Override

@@ -37,6 +37,7 @@ public class LotteryService {
 
         lottery.setStartDate(strDate);
         lottery.setLotteryStatus("IN PROGRESS");
+        lottery.setParticipantCount("0");
 
         LotteryResponse response = lotteryDAO.startRegistration(lottery);
         LOGGER.info("Created lottery -> " + lottery);
@@ -61,6 +62,10 @@ public class LotteryService {
             if (!wrappedLottery.get().getLotteryStatus().equals("IN PROGRESS")) {
                 LOGGER.error("Failed to stop lottery registration with id " + lotteryId);
                 return new LotteryFailResponse("Fail", "Lottery with id " + lotteryId + " already ended");
+            }
+
+            if (wrappedLottery.get().getParticipants().size() == 0) {
+                return new LotteryFailResponse("Fail", "No participants found for lottery with id - " + lotteryId);
             }
 
             Date date = new Date();
@@ -91,10 +96,6 @@ public class LotteryService {
 
             if (wrappedLottery.get().getLotteryStatus().equals("IN PROGRESS")) {
                 return new LotteryFailResponse("Fail", "Lottery with id " + id + " is still ongoing");
-            }
-
-            if (wrappedLottery.get().getParticipants().size() == 0) {
-                return new LotteryFailResponse("Fail", "No participants found for lottery with id - " + id);
             }
 
             // check so winner can't be chosen multiple times

@@ -34,13 +34,15 @@ public class ParticipantService {
             // check if limit is available
             wrappedLottery.get().setParticipantCount(String.valueOf(wrappedLottery.get().getParticipants().size() + 1));
 
+            // check if status is in progress
+            if (!wrappedLottery.get().getLotteryStatus().equals("IN PROGRESS")) {
+                return new ParticipantFailResponse("Fail", "Lottery: " + wrappedLottery.get().getTitle() + " is concluded, " +
+                        "please choose another one with status - In progress");
+            }
+
             if (Integer.valueOf(wrappedLottery.get().getParticipantCount()) > (Integer.valueOf(wrappedLottery.get().getLimit()))) {
                 return new ParticipantFailResponse("Fail", "Lottery{" + wrappedLottery.get().getTitle() + "} : limit reached, " +
                         "please choose another one from available list");
-            // check if status is in progress
-            } else if (!wrappedLottery.get().getLotteryStatus().equals("IN PROGRESS")) {
-                return new ParticipantFailResponse("Fail", "Lottery: " + wrappedLottery.get().getTitle() + " is concluded, " +
-                        "please choose another one with status - In progress");
             }
 
             // start participant registration
