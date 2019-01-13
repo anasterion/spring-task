@@ -19,10 +19,10 @@ group = 'lv.helloit'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
+
 repositories {
 	mavenCentral()
 }
-
 
 dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-web')
@@ -36,6 +36,4 @@ dependencies {
 	compile('javax.servlet:jstl:1.2')
 	compile ('org.springframework.security:spring-security-taglibs:5.1.2.RELEASE')
 	compile ('com.h2database:h2:1.4.197')
-
-
 }
