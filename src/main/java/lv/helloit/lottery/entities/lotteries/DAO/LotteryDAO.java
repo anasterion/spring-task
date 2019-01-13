@@ -20,4 +20,6 @@ public interface LotteryDAO {
     List<Lottery> getWithStatus(String status);
 
     List<Lottery> getInProgressForParticipant();
+
+    Long getLotteryWithMaxId();
 }

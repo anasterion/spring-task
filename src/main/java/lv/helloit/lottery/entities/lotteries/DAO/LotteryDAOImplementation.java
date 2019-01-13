@@ -6,6 +6,9 @@ import lv.helloit.lottery.entities.lotteries.entities.LotterySuccessResponse;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -106,5 +109,15 @@ public class LotteryDAOImplementation implements LotteryDAO {
 
         session.close();
         return lotteryList;
+    }
+
+    @Override
+    public Long getLotteryWithMaxId() {
+        Session session = sessionFactory.openSession();
+
+        Query<Lottery> query = session.createQuery("from Lottery l where l.id = (select max(id) from Lottery)", Lottery.class);
+        List<Lottery> lotteryList = query.getResultList();
+
+        return lotteryList.get(0).getId();
     }
 }

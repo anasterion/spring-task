@@ -68,7 +68,7 @@ public class LotteryService {
 
             wrappedLottery.get().setLotteryStatus("ENDED");
             lotteryDAO.update(wrappedLottery.get());
-            LOGGER.info("Lottery id: " + lotteryId + "status updated to - ENDED");
+            LOGGER.info("Lottery id: " + lotteryId + " status updated to - ENDED");
 
             LOGGER.info("Successfully stopped lottery: " + wrappedLottery.get().getTitle() + " - registration");
             return new LotteryResponse("OK");

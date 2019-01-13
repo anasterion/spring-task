@@ -42,6 +42,18 @@ public class Lottery {
     @JsonIgnore
     private List<Participant> participants;
 
+    public Lottery() {
+    }
+
+    public Lottery(String title, String limit, String startDate, String endDate, String lotteryStatus, String participantCount, List<Participant> participants) {
+        this.title = title;
+        this.limit = limit;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.lotteryStatus = lotteryStatus;
+        this.participantCount = participantCount;
+        this.participants = participants;
+    }
 
     public Long getId() {
         return id;

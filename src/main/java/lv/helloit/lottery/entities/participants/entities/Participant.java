@@ -43,6 +43,15 @@ public class Participant {
     public Participant() {
     }
 
+    public Participant(String lotteryId, String email, String age, String code, String status, Lottery lottery) {
+        this.lotteryId = lotteryId;
+        this.email = email;
+        this.age = age;
+        this.code = code;
+        this.status = status;
+        this.lottery = lottery;
+    }
+
     public Long getId() {
         return id;
     }
